@@ -1,3 +1,10 @@
 """Navigator - Agent execution and management SDK."""
 
-__version__ = "0.1.0"
+from __future__ import annotations
+
+try:
+    from importlib.metadata import version
+
+    __version__ = version("navigator")
+except Exception:
+    __version__ = "0.0.0"

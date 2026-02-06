@@ -5,4 +5,4 @@ import navigator
 
 def test_version() -> None:
     """Test that version is defined."""
-    assert navigator.__version__ == "0.1.0"
+    assert navigator.__version__
