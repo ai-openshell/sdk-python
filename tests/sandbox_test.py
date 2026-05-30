@@ -174,15 +174,13 @@ class _FakeClientCallDetails:
         self.wait_for_ready = wait_for_ready
 
     def _replace(self, **kwargs: Any) -> _FakeClientCallDetails:
-        current = {
-            "method": self.method,
-            "timeout": self.timeout,
-            "metadata": self.metadata,
-            "credentials": self.credentials,
-            "wait_for_ready": self.wait_for_ready,
-        }
-        current.update(kwargs)
-        return _FakeClientCallDetails(**current)
+        return _FakeClientCallDetails(
+            method=kwargs.get("method", self.method),
+            timeout=kwargs.get("timeout", self.timeout),
+            metadata=kwargs.get("metadata", self.metadata),
+            credentials=kwargs.get("credentials", self.credentials),
+            wait_for_ready=kwargs.get("wait_for_ready", self.wait_for_ready),
+        )
 
 
 def test_normalize_bearer_accepts_str_or_callable() -> None:
@@ -947,7 +945,7 @@ def test_refresher_concurrent_calls_share_one_refresh(tmp_path: Path) -> None:
         )
 
     r = _OidcRefresher(tmp_path, "g", write_back=False)
-    _install_mock_transport(r, _httpx.MockTransport(handler))  # type: ignore[has-type]
+    _install_mock_transport(r, _httpx.MockTransport(handler))
 
     results: list[str] = []
     errors: list[BaseException] = []
