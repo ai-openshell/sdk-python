@@ -1,0 +1,12 @@
+version: v2
+plugins:
+  - remote: buf.build/bufbuild/py:v0.7.0
+    out: src/openshell/proto
+  - remote: buf.build/bufbuild/grpc-py:v0.5.0
+    out: src/openshell/proto
+inputs:
+  - module: buf.build/openshell/core:436c4daccfee453aad704a5d36dacfde
+  - module: buf.build/googleapis/googleapis:8ac61b9e502343289c8c42b17aa5b245
+    paths:
+      - google/rpc/status.proto
+      - google/rpc/error_details.proto

@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+dist/
+*.egg-info/
+src/openshell/proto/**/*_pb.py
+src/openshell/proto/**/*_pb_grpc.py
+src/openshell/proto/google/
