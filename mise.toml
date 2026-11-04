@@ -10,6 +10,7 @@ min_version = { soft = "2026.9.9" }
 
 [tools]
 python = "3.14.5"
+buf = "1.72.0"
 uv = "0.10.12"
 
 [env]
@@ -29,8 +30,16 @@ description = "Install the SDK and its development dependencies"
 run = "uv sync --frozen --group dev"
 
 [tasks."proto:fetch"]
-description = "Fetch core's proto/ at the pinned ref into proto/"
-run = "scripts/fetch-core.sh $OPENSHELL_CORE_REF . proto"
+description = "Export the SDK's protos from core at the pinned ref into proto/"
+# buf follows the imports of the two root files, so proto/ holds exactly the
+# files the SDK compiles.
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+rm -rf proto
+buf export "https://github.com/NVIDIA/OpenShell.git#ref=${OPENSHELL_CORE_REF},depth=1,subdir=proto" \
+  --path openshell.proto --path credential_driver.proto --output proto
+"""
 sources = ["mise.toml"]
 outputs = ["proto/openshell.proto"]
 

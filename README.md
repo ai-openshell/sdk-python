@@ -30,7 +30,8 @@ mise run core:version
 
 The bindings are generated from `proto/` in NVIDIA/OpenShell at the ref in
 `OPENSHELL_CORE_REF` (`mise.toml`, currently `v0.1.7`) and committed under
-`src/openshell/_proto`:
+`src/openshell/_proto`. `buf export` fetches the protos, the same way sdk-go
+reads them, and `grpcio-tools` generates the bindings:
 
 - Building a wheel or sdist needs neither a core checkout nor network access.
 - A change of the pin shows the effect on the generated API in its diff.

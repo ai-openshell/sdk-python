@@ -4,6 +4,10 @@
 
 # fetch-core.sh: copy files from NVIDIA/OpenShell at a pinned ref.
 #
+# The protos come from `buf export` (mise run proto:fetch); this script fetches
+# the other core files the repository checks against, such as the vendored
+# conformance fixtures.
+#
 # Usage: fetch-core.sh <ref> <out-dir> <core-path>...
 #
 # Fetches only <ref> (a tag or a full commit SHA), without history or unneeded
