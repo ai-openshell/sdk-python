@@ -1,0 +1,27 @@
+# git filter-repo --paths-from-file rules for the Python SDK.
+#
+# Filters (lines without ==>) select what history keeps and match the core
+# path. Renames (lines with ==>) run in order and map core paths to this
+# repository's layout. Filters must stay above renames: filter-repo checks a
+# filter against the path as renamed so far.
+
+# The package, under its current and its pre-rename (navigator) name. Tests
+# that exercise core packaging, release tooling, or gateway config stay in
+# core and are left out.
+regex:^python/(openshell|navigator)/(?!(release_formula|rpm_gateway_config_migration|gateway_config_fixture|gateway_schema_v2_[a-z_]+)_test\.py$)
+# SDK tests at the python/ root. release_tooling_test.py covers core's
+# release.py and stays in core.
+regex:^python/(credential_driver_proto|generate_python_proto|grpc_transport|grpc_typing|wheel_verifier)_test\.py$
+# Package metadata and the build scripts the SDK owns.
+pyproject.toml
+tasks/scripts/generate_python_proto.py
+tasks/scripts/verify-python-wheel.py
+
+# Tests move to tests/, the package to src/, scripts to scripts/. The
+# navigator package keeps its tests beside it: moving them too would put a
+# delete and an add of the same tests/ path in the commit that renamed it.
+regex:^python/openshell/([^/]+_test\.py)$==>tests/\1
+regex:^python/([^/]+_test\.py)$==>tests/\1
+python/openshell/==>src/openshell/
+python/navigator/==>src/navigator/
+tasks/scripts/==>scripts/
