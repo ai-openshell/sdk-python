@@ -39,7 +39,7 @@ classifiers = [
 keywords = ["agent", "sandbox", "nvidia"]
 
 [project.urls]
-source = "https://github.com/NVIDIA/OpenShell"
+source = "https://github.com/ai-openshell/sdk-python"
 documentation = "https://docs.nvidia.com/openshell/latest/"
 
 [dependency-groups]
@@ -51,7 +51,6 @@ dev = [
     "ruff>=0.4",
     "ty>=0.0.94",
     "grpcio-tools>=1.60",
-    "pyelftools>=0.30",
     "pyyaml==6.0.2",
     "types-pyyaml>=6.0.12.20260518",
     "mypy-protobuf>=5.1",
@@ -60,25 +59,29 @@ dev = [
 ]
 
 [tool.setuptools]
-package-dir = { "" = "python" }
+package-dir = { "" = "src" }
 include-package-data = false
 
 [tool.setuptools.packages.find]
-where = ["python"]
+where = ["src"]
 include = ["openshell*"]
 namespaces = false
 
 [tool.setuptools.package-data]
 openshell = ["py.typed", "_proto/*.py", "_proto/*.pyi"]
 
-# Ignore non-release tags such as sdk/go/vX.Y.Z, which share the release commit.
 [tool.setuptools_scm]
 git_describe_command = ["git", "describe", "--dirty", "--tags", "--long", "--match", "v[0-9]*"]
 
 [tool.ruff]
 target-version = "py311"
 line-length = 88
-exclude = ["python/openshell/_proto"]
+exclude = ["src/openshell/_proto"]
+
+# The generated bindings are committed, so the tools no longer skip them as
+# gitignored files.
+[tool.ty.src]
+exclude = ["src/openshell/_proto"]
 
 [tool.ruff.lint]
 select = [
@@ -109,7 +112,7 @@ skip-magic-trailing-comma = false
 line-ending = "auto"
 
 [tool.pytest.ini_options]
-testpaths = ["python"]
+testpaths = ["tests"]
 python_files = ["*_test.py"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"
@@ -119,7 +122,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["python"]
+source = ["src"]
 branch = true
 
 [tool.coverage.report]

@@ -30,7 +30,7 @@ def main() -> None:
         ),
     )
     args = parser.parse_args()
-    output_dir = Path("python/openshell/_proto")
+    output_dir = Path("src/openshell/_proto")
 
     subprocess.run(
         [
@@ -38,16 +38,16 @@ def main() -> None:
             "-m",
             "grpc_tools.protoc",
             "-Iproto",
-            "--python_out=python/openshell/_proto",
+            "--python_out=src/openshell/_proto",
             *(
                 []
                 if args.no_pyi
                 else [
-                    "--pyi_out=python/openshell/_proto",
-                    "--mypy_grpc_out=generate_concrete_servicer_stubs:python/openshell/_proto",
+                    "--pyi_out=src/openshell/_proto",
+                    "--mypy_grpc_out=generate_concrete_servicer_stubs:src/openshell/_proto",
                 ]
             ),
-            "--grpc_python_out=python/openshell/_proto",
+            "--grpc_python_out=src/openshell/_proto",
             *PROTO_FILES,
         ],
         check=True,

@@ -16,11 +16,11 @@ import pytest
 def test_generate_package_relative_bindings(tmp_path: Path, no_pyi: bool) -> None:
     root = Path(__file__).resolve().parents[1]
     shutil.copytree(root / "proto", tmp_path / "proto")
-    output = tmp_path / "python/openshell/_proto"
+    output = tmp_path / "src/openshell/_proto"
     output.mkdir(parents=True)
     command = [
         sys.executable,
-        str(root / "tasks/scripts/generate_python_proto.py"),
+        str(root / "scripts/generate_python_proto.py"),
         *(["--no-pyi"] if no_pyi else []),
     ]
     subprocess.run(command, cwd=tmp_path, check=True, capture_output=True, text=True)
