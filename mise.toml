@@ -1,0 +1,121 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Python SDK tasks. Run `mise tasks` to list them and `mise run ci` for the
+# full pipeline. Bindings are generated from core's proto/ at the ref pinned in
+# OPENSHELL_CORE_REF and committed under src/openshell/_proto, so building the
+# package needs no core checkout and no network.
+
+min_version = { soft = "2026.9.9" }
+
+[tools]
+python = "3.14.5"
+uv = "0.10.12"
+
+[env]
+# The single core pin: a release tag (or a full commit SHA).
+OPENSHELL_CORE_REF = "v0.1.7"
+SETUPTOOLS_SCM_PRETEND_VERSION_FOR_OPENSHELL = "0.0.0"
+
+[vars]
+python_paths = "src/ tests/ scripts/"
+
+[tasks."core:version"]
+description = "Print the pinned core ref"
+run = "echo $OPENSHELL_CORE_REF"
+
+[tasks.sync]
+description = "Install the SDK and its development dependencies"
+run = "uv sync --frozen --group dev"
+
+[tasks."proto:fetch"]
+description = "Fetch core's proto/ at the pinned ref into proto/"
+run = "scripts/fetch-core.sh $OPENSHELL_CORE_REF . proto"
+sources = ["mise.toml"]
+outputs = ["proto/openshell.proto"]
+
+[tasks."proto:gen"]
+description = "Generate the Python bindings into src/openshell/_proto"
+depends = ["sync", "proto:fetch"]
+run = "uv run --frozen python scripts/generate_python_proto.py"
+
+[tasks."proto:check"]
+description = "Fail if the committed bindings differ from the pinned protos"
+depends = ["proto:gen"]
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+if ! git diff --exit-code --stat -- src/openshell/_proto \
+   || [ -n "$(git ls-files --others --exclude-standard -- src/openshell/_proto)" ]; then
+  echo "ERROR: src/openshell/_proto is stale; run 'mise run proto:gen' and commit." >&2
+  exit 1
+fi
+"""
+
+[tasks."conformance:check"]
+description = "Fail if vendored fixtures differ from core at the pinned ref"
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+core=$(mktemp -d)
+trap 'rm -rf "$core"' EXIT
+scripts/fetch-core.sh "$OPENSHELL_CORE_REF" "$core" sdk/conformance
+for fixture in oauth-client-credentials.json oauth-client-credentials.json.license; do
+  diff -u "$core/sdk/conformance/$fixture" "tests/fixtures/$fixture"
+done
+"""
+
+[tasks.lint]
+description = "Lint with ruff"
+depends = ["sync"]
+run = "uv run --frozen ruff check {{vars.python_paths}}"
+
+[tasks.format]
+description = "Format with ruff"
+depends = ["sync"]
+run = "uv run --frozen ruff format {{vars.python_paths}}"
+
+[tasks."format:check"]
+description = "Check formatting with ruff"
+depends = ["sync"]
+run = "uv run --frozen ruff format --check {{vars.python_paths}}"
+
+[tasks.typecheck]
+description = "Type check with ty"
+depends = ["sync"]
+run = "uv run --frozen ty check {{vars.python_paths}}"
+
+[tasks.test]
+description = "Run unit tests (set UV_PYTHON to pick the interpreter)"
+depends = ["sync", "proto:fetch"]
+run = "uv run --frozen pytest -n auto"
+
+[tasks.check]
+description = "Run formatting, lint, type, and drift checks"
+depends = ["format:check", "lint", "typecheck", "proto:check", "conformance:check"]
+
+[tasks.build]
+description = "Build the wheel and sdist, verify the wheel, and install both on the oldest Python"
+depends = ["sync"]
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+rm -rf dist
+uv build --out-dir dist
+uv run --no-project python scripts/verify-python-wheel.py dist \
+  --expected-version "$SETUPTOOLS_SCM_PRETEND_VERSION_FOR_OPENSHELL"
+
+# Install each artifact into a clean environment on the oldest supported
+# Python and import the public API and the generated bindings.
+smoke=$(mktemp -d)
+trap 'rm -rf "$smoke"' EXIT
+for artifact in dist/*.whl dist/*.tar.gz; do
+  uv venv --quiet --clear --python "${SMOKE_PYTHON:-3.11}" "$smoke/venv"
+  uv pip install --quiet --python "$smoke/venv/bin/python" "$artifact"
+  "$smoke/venv/bin/python" -I -c 'import openshell, openshell._proto.openshell_pb2_grpc; print(openshell.__version__, len(openshell.__all__))'
+done
+"""
+
+[tasks.ci]
+description = "Run the full CI pipeline"
+depends = ["check", "test", "build"]
