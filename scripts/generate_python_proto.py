@@ -9,14 +9,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-PROTO_FILES = [
-    "proto/openshell.proto",
-    "proto/datamodel.proto",
-    "proto/options.proto",
-    "proto/sandbox.proto",
-    "proto/extension.proto",
-    "proto/credential_driver.proto",
-]
+# `mise run proto:fetch` exports exactly the SDK's protos (two roots and their
+# imports) into proto/, so every file there is compiled.
+PROTO_DIR = Path("proto")
 
 
 def main() -> None:
@@ -31,6 +26,9 @@ def main() -> None:
     )
     args = parser.parse_args()
     output_dir = Path("src/openshell/_proto")
+    proto_files = sorted(str(path) for path in PROTO_DIR.glob("*.proto"))
+    if not proto_files:
+        sys.exit(f"no .proto files in {PROTO_DIR}/; run `mise run proto:fetch`")
 
     subprocess.run(
         [
@@ -48,19 +46,19 @@ def main() -> None:
                 ]
             ),
             "--grpc_python_out=src/openshell/_proto",
-            *PROTO_FILES,
+            *proto_files,
         ],
         check=True,
     )
 
     # Rewrite only imports of our generated modules, leaving google.protobuf
     # imports intact. The same rule covers runtime modules and type stubs.
-    modules = "|".join(re.escape(f"{Path(path).stem}_pb2") for path in PROTO_FILES)
+    modules = "|".join(re.escape(f"{Path(path).stem}_pb2") for path in proto_files)
     pattern = rf"^import ({modules})( as \w+)?$"
     suffixes = ["_pb2.py", "_pb2_grpc.py"]
     if not args.no_pyi:
         suffixes.extend(["_pb2.pyi", "_pb2_grpc.pyi"])
-    for proto in PROTO_FILES:
+    for proto in proto_files:
         for suffix in suffixes:
             file_path = output_dir / f"{Path(proto).stem}{suffix}"
             text = file_path.read_text()
