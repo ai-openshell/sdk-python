@@ -58,6 +58,11 @@ dev = [
     "types-protobuf>=6.32,<7",
 ]
 
+# mise pins uv exactly (mise.toml); this rejects older versions when uv is
+# installed some other way.
+[tool.uv]
+required-version = ">=0.10"
+
 [tool.setuptools]
 package-dir = { "" = "src" }
 include-package-data = false

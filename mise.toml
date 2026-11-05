@@ -8,8 +8,11 @@
 
 min_version = { soft = "2026.9.9" }
 
+# Python is pinned once, in .python-version, which both uv and mise read.
+[settings]
+idiomatic_version_file_enable_tools = ["python"]
+
 [tools]
-python = "3.14.5"
 buf = "1.72.0"
 uv = "0.10.12"
 
