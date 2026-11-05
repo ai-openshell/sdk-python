@@ -1,0 +1,7 @@
+# Generated protobuf bindings (committed; see README). GitHub collapses them
+# in diffs and leaves them out of language statistics. _proto/__init__.py is
+# hand-written and stays visible.
+src/openshell/_proto/*_pb2.py linguist-generated
+src/openshell/_proto/*_pb2.pyi linguist-generated
+src/openshell/_proto/*_pb2_grpc.py linguist-generated
+src/openshell/_proto/*_pb2_grpc.pyi linguist-generated
