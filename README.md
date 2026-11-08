@@ -17,7 +17,9 @@ NVIDIA/OpenShell stay on PyPI.
 
 Tools are managed by [mise](https://mise.jdx.dev/) and dependencies by
 [uv](https://docs.astral.sh/uv/). The Python version is pinned in
-`.python-version`, which both read.
+`.python-version`, which both read. See [CONTRIBUTING.md](CONTRIBUTING.md) for
+setup, commit rules and the release model, and [SECURITY.md](SECURITY.md) to
+report a vulnerability.
 
 ```shell
 mise run ci          # checks, tests, build, and install smoke test
