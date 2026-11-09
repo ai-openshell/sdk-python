@@ -51,8 +51,25 @@ pinned ref.
 ## Releases
 
 SDK releases follow core releases: SDK `X.Y.Z` is built from core `vX.Y.Z`, and
-there are no SDK-only releases. To try unreleased changes, install from the
-repository:
+there are no SDK-only releases. Pre-release pins are never released.
+
+Merging a pull request that moves the pin to a stable core tag releases the SDK.
+`release.yml` runs on every push to `main` and does nothing unless the pin
+changed to a stable tag. Then it:
+
+1. tags `vX.Y.Z` at the merged commit and creates a draft GitHub release, with
+   the pull request's description as notes (`scripts/release/tag-release.sh`);
+2. builds the wheel and sdist at version `X.Y.Z`, verifies them, and writes
+   their checksums;
+3. publishes to PyPI from the `pypi` environment with trusted publishing;
+4. attaches the files and the checksums to the draft and publishes it.
+
+If a run fails, re-run only its failed jobs. The tag step skips a tag or draft
+that exists already, and a published release is never released again.
+To release a commit by hand, start the workflow on `main` with the commit's SHA
+(`gh workflow run release.yml -f sha=<commit>`).
+
+To try unreleased changes, install from the repository:
 
 ```shell
 pip install "openshell @ git+https://github.com/ai-openshell/sdk-python@main"
