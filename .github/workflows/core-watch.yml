@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Opens one update proposal per new core release tag
-# (scripts/core-sync/open-bump-pr.sh).
+# (mise run core:bump).
 name: core-watch
 
 on:
@@ -45,7 +45,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: true
 
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+      - uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c # v5.2.6
 
       - name: Set the bot identity
         env:
@@ -66,14 +66,14 @@ jobs:
           if [ -n "$INPUT_TAG" ]; then
             tags=$INPUT_TAG
           else
-            tags=$(scripts/core-sync/core-tags.sh)
+            tags=$(mise run --quiet core:tags)
           fi
           if [ -z "$tags" ]; then
             echo "No core tags newer than $(mise run --quiet core:version)."
             exit 0
           fi
           for t in $tags; do
-            scripts/core-sync/open-bump-pr.sh "$t"
+            mise run core:bump -- "$t"
           done
 
       - name: Report failure
@@ -81,4 +81,4 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: scripts/core-sync/report-failure.sh core-watch "$RUN_URL"
+        run: mise run core:report-failure -- core-watch "$RUN_URL"

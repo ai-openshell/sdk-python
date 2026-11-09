@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Nightly comparison of core main with the pinned core tag; keeps the single
-# "Core main drift" issue current (scripts/core-sync/drift-check.sh).
+# "Core main drift" issue current (mise run core:drift).
 name: core-drift
 
 on:
@@ -36,24 +36,24 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+      - uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c # v5.2.6
 
       # Exit 1 with a report means drift; the issue records it. No report
       # means the check itself broke, which the failure step records.
       - name: Check drift against core main
         run: |
-          scripts/core-sync/drift-check.sh --out drift-report.md || true
+          mise run core:drift -- --out drift-report.md || true
           test -s drift-report.md
           cat drift-report.md >>"$GITHUB_STEP_SUMMARY"
 
       - name: Update the drift issue
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: scripts/core-sync/update-drift-issue.sh drift-report.md
+        run: mise run core:drift-issue -- drift-report.md
 
       - name: Report failure
         if: failure()
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: scripts/core-sync/report-failure.sh core-drift "$RUN_URL"
+        run: mise run core:report-failure -- core-drift "$RUN_URL"

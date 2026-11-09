@@ -14,14 +14,14 @@ The workflows use a GitHub App token from the `sdk-bot` environment (secrets `SD
 | `open-bump-pr.sh <tag> [--dry-run]` | `core:bump` | Open the update proposal for one core tag: branch `core/<tag>`, pin change, regenerated bindings, refreshed copies of core files, proto diff in the body, labels `core-bump` plus `stable` or `prerelease`. Closes older pre-release proposals. |
 | `bump-pr-body.md` | | PR body template for `open-bump-pr.sh`. |
 | `drift-check.sh --out <file>` | `core:drift` | Compare core `main` with the pin: `buf breaking`, regenerate and run the unit tests, list the RPCs the SDK doesn't call. Writes the markdown report. |
-| `update-drift-issue.sh <report.md> [--dry-run]` | | Create, update, or close the single `Core main drift` issue from a report. |
-| `report-failure.sh <job> <run-url> [--dry-run]` | | Append a dated failure line to the drift issue. Called from `if: failure()` steps. |
+| `update-drift-issue.sh <report.md> [--dry-run]` | `core:drift-issue` | Create, update, or close the single `Core main drift` issue from a report. |
+| `report-failure.sh <job> <run-url> [--dry-run]` | `core:report-failure` | Append a dated failure line to the drift issue. Called from `if: failure()` steps. |
 | `drift-issue.sh` | | Shared helpers for the two drift issue scripts (sourced, not run). |
 
-| Workflow | Runs |
+| Workflow | Runs (mise tasks) |
 |----------|------|
-| `core-watch.yml` (hourly) | `core-tags.sh`, then `open-bump-pr.sh` per tag |
-| `core-drift.yml` (nightly) | `drift-check.sh`, then `update-drift-issue.sh` |
+| `core-watch.yml` (hourly) | `core:tags`, then `core:bump` per tag |
+| `core-drift.yml` (nightly) | `core:drift`, then `core:drift-issue` |
 
 Bump PRs run E2E against their own pin, because `e2e.yml` defaults to `OPENSHELL_CORE_REF` on the PR branch.
 
