@@ -64,7 +64,7 @@ if ! git diff --exit-code --stat -- src/openshell/_proto \
 fi
 """
 
-[tasks."conformance:check"]
+[tasks."vendored:check"]
 description = "Fail if a file copied from core (scripts/vendored-core-files.txt) differs from core at the pinned ref"
 run = """
 #!/usr/bin/env bash
@@ -117,7 +117,7 @@ run = "uv run --frozen pytest tests/e2e -n ${E2E_PARALLEL:-5}"
 
 [tasks.check]
 description = "Run formatting, lint, type, and drift checks"
-depends = ["format:check", "lint", "typecheck", "proto:check", "conformance:check"]
+depends = ["format:check", "lint", "typecheck", "proto:check", "vendored:check"]
 
 [tasks.build]
 description = "Build the wheel and sdist, verify the wheel, and install both on the oldest Python"

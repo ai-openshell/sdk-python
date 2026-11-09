@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Files copied from NVIDIA/OpenShell at the pinned ref, one per line:
-# <path in core> <path here>. `mise run conformance:check` fails when a copy
+# <path in core> <path here>. `mise run vendored:check` fails when a copy
 # differs from core, and core bump PRs refresh them (core-sync/open-bump-pr.sh).
 sdk/conformance/oauth-client-credentials.json tests/fixtures/oauth-client-credentials.json
 sdk/conformance/oauth-client-credentials.json.license tests/fixtures/oauth-client-credentials.json.license

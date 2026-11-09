@@ -40,5 +40,5 @@ Bump PRs run E2E against their own pin, because `e2e.yml` defaults to `OPENSHELL
 |------|-----------|---------|
 | `generate_python_proto.py` | `proto:gen` | Generate `src/openshell/_proto` from `proto/`. |
 | `verify-python-wheel.py` | `build` | Check the wheel's contents and version. |
-| `vendored-core-files.txt` | `conformance:check` | Files copied from core. `conformance:check` compares them with core at the pin; `core-sync/open-bump-pr.sh` refreshes them. |
-| `fetch-core.sh <ref> <dir> <path>...` | `conformance:check` | Copy files from core at a ref. |
+| `vendored-core-files.txt` | `vendored:check` | Files copied from core. `vendored:check` compares them with core at the pin; `core-sync/open-bump-pr.sh` refreshes them. |
+| `fetch-core.sh <ref> <dir> <path>...` | `vendored:check` | Copy files from core at a ref. |
