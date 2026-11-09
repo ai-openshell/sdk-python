@@ -65,16 +65,17 @@ fi
 """
 
 [tasks."conformance:check"]
-description = "Fail if vendored fixtures differ from core at the pinned ref"
+description = "Fail if vendored fixtures or the E2E workload Dockerfile differ from core at the pinned ref"
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
 core=$(mktemp -d)
 trap 'rm -rf "$core"' EXIT
-scripts/fetch-core.sh "$OPENSHELL_CORE_REF" "$core" sdk/conformance
+scripts/fetch-core.sh "$OPENSHELL_CORE_REF" "$core" sdk/conformance e2e/python/Dockerfile.workload
 for fixture in oauth-client-credentials.json oauth-client-credentials.json.license; do
   diff -u "$core/sdk/conformance/$fixture" "tests/fixtures/$fixture"
 done
+diff -u "$core/e2e/python/Dockerfile.workload" tests/e2e/Dockerfile.workload
 """
 
 [tasks.lint]
@@ -100,7 +101,18 @@ run = "uv run --frozen ty check {{vars.python_paths}}"
 [tasks.test]
 description = "Run unit tests (set UV_PYTHON to pick the interpreter)"
 depends = ["sync", "proto:fetch"]
-run = "uv run --frozen pytest -n auto"
+run = "uv run --frozen pytest -n auto --ignore=tests/e2e"
+
+[tasks."e2e:image"]
+description = "Build the E2E sandbox image: Python from .python-version plus cloudpickle, for exec_python"
+run = """
+docker build --file tests/e2e/Dockerfile.workload   --build-arg "PYTHON_VERSION=$(cat .python-version)"   --tag openshell/e2e-python:dev tests/e2e
+"""
+
+[tasks.e2e]
+description = "Run the E2E suite against the gateway named in OPENSHELL_GATEWAY (see scripts/e2e/start-gateway.sh)"
+depends = ["sync"]
+run = "uv run --frozen pytest tests/e2e -n ${E2E_PARALLEL:-5}"
 
 [tasks.check]
 description = "Run formatting, lint, type, and drift checks"
