@@ -35,7 +35,7 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS :: MacOS X",
 ]
-keywords = ["openshell", "sdk", "agent", "sandbox", "grpc", "nvidia"]
+keywords = ["openshell", "sdk", "agent", "sandbox", "nvidia"]
 
 [project.urls]
 source = "https://github.com/ai-openshell/sdk-python"
