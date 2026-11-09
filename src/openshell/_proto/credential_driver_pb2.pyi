@@ -31,7 +31,7 @@ class GetCredentialDriverCapabilitiesResponse(_message.Message):
     supports_list: bool
     supports_expires_at: bool
     extension: _extension_pb2.PeerMetadata
-    def __init__(self, driver_name: _Optional[str] = ..., driver_version: _Optional[str] = ..., backend_kind: _Optional[str] = ..., supports_list: _Optional[bool] = ..., supports_expires_at: _Optional[bool] = ..., extension: _Optional[_Union[_extension_pb2.PeerMetadata, _Mapping]] = ...) -> None: ...
+    def __init__(self, driver_name: _Optional[str] = ..., driver_version: _Optional[str] = ..., backend_kind: _Optional[str] = ..., supports_list: bool = ..., supports_expires_at: bool = ..., extension: _Optional[_Union[_extension_pb2.PeerMetadata, _Mapping]] = ...) -> None: ...
 
 class StoreCredentialRequest(_message.Message):
     __slots__ = ("provider", "credential_key", "value", "existing_handle", "workspace", "provider_id", "object_id")

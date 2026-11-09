@@ -471,13 +471,13 @@ class CpuResourceCapabilities(_message.Message):
     __slots__ = ("limit_supported",)
     LIMIT_SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     limit_supported: bool
-    def __init__(self, limit_supported: _Optional[bool] = ...) -> None: ...
+    def __init__(self, limit_supported: bool = ...) -> None: ...
 
 class MemoryResourceCapabilities(_message.Message):
     __slots__ = ("limit_supported",)
     LIMIT_SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     limit_supported: bool
-    def __init__(self, limit_supported: _Optional[bool] = ...) -> None: ...
+    def __init__(self, limit_supported: bool = ...) -> None: ...
 
 class GpuResourceCapabilities(_message.Message):
     __slots__ = ("default_selection_supported", "count_selection_supported")
@@ -485,7 +485,7 @@ class GpuResourceCapabilities(_message.Message):
     COUNT_SELECTION_SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     default_selection_supported: bool
     count_selection_supported: bool
-    def __init__(self, default_selection_supported: _Optional[bool] = ..., count_selection_supported: _Optional[bool] = ...) -> None: ...
+    def __init__(self, default_selection_supported: bool = ..., count_selection_supported: bool = ...) -> None: ...
 
 class Sandbox(_message.Message):
     __slots__ = ("metadata", "spec", "status", "host_key_fingerprint", "created_from_workload_template")
@@ -530,7 +530,7 @@ class SandboxSpec(_message.Message):
     tty: bool
     provider_attachment_epoch: str
     restart_policy: SandboxRestartPolicy
-    def __init__(self, log_level: _Optional[str] = ..., environment: _Optional[_Mapping[str, str]] = ..., template: _Optional[_Union[SandboxTemplate, _Mapping]] = ..., policy: _Optional[_Union[_sandbox_pb2.SandboxPolicy, _Mapping]] = ..., providers: _Optional[_Iterable[str]] = ..., resource_requirements: _Optional[_Union[ResourceRequirements, _Mapping]] = ..., command: _Optional[_Iterable[str]] = ..., tty: _Optional[bool] = ..., provider_attachment_epoch: _Optional[str] = ..., restart_policy: _Optional[_Union[SandboxRestartPolicy, str]] = ...) -> None: ...
+    def __init__(self, log_level: _Optional[str] = ..., environment: _Optional[_Mapping[str, str]] = ..., template: _Optional[_Union[SandboxTemplate, _Mapping]] = ..., policy: _Optional[_Union[_sandbox_pb2.SandboxPolicy, _Mapping]] = ..., providers: _Optional[_Iterable[str]] = ..., resource_requirements: _Optional[_Union[ResourceRequirements, _Mapping]] = ..., command: _Optional[_Iterable[str]] = ..., tty: bool = ..., provider_attachment_epoch: _Optional[str] = ..., restart_policy: _Optional[_Union[SandboxRestartPolicy, str]] = ...) -> None: ...
 
 class ResourceRequirements(_message.Message):
     __slots__ = ("gpu",)
@@ -585,7 +585,7 @@ class SandboxTemplate(_message.Message):
     resources: _struct_pb2.Struct
     user_namespaces: bool
     driver_config: _struct_pb2.Struct
-    def __init__(self, image: _Optional[str] = ..., runtime_class_name: _Optional[str] = ..., agent_socket: _Optional[str] = ..., labels: _Optional[_Mapping[str, str]] = ..., annotations: _Optional[_Mapping[str, str]] = ..., environment: _Optional[_Mapping[str, str]] = ..., resources: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., user_namespaces: _Optional[bool] = ..., driver_config: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
+    def __init__(self, image: _Optional[str] = ..., runtime_class_name: _Optional[str] = ..., agent_socket: _Optional[str] = ..., labels: _Optional[_Mapping[str, str]] = ..., annotations: _Optional[_Mapping[str, str]] = ..., environment: _Optional[_Mapping[str, str]] = ..., resources: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., user_namespaces: bool = ..., driver_config: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
 
 class SandboxWorkloadTemplate(_message.Message):
     __slots__ = ("metadata", "spec")
@@ -688,7 +688,7 @@ class SandboxStatus(_message.Message):
     next_restart_time: _timestamp_pb2.Timestamp
     main_process_started_time: _timestamp_pb2.Timestamp
     last_token_grant_failure: TokenGrantFailureObservation
-    def __init__(self, agent_pod: _Optional[str] = ..., agent_fd: _Optional[str] = ..., sandbox_fd: _Optional[str] = ..., conditions: _Optional[_Iterable[_Union[SandboxCondition, _Mapping]]] = ..., phase: _Optional[_Union[SandboxPhase, str]] = ..., current_policy_version: _Optional[int] = ..., main_process_instance_id: _Optional[str] = ..., exit_code: _Optional[int] = ..., endpoint_statuses: _Optional[_Iterable[_Union[EndpointStatus, _Mapping]]] = ..., configuration_admission: _Optional[_Union[SandboxConfigurationAdmission, _Mapping]] = ..., configuration_activated: _Optional[bool] = ..., provisioning: _Optional[_Union[SandboxProvisioning, _Mapping]] = ..., restart_count: _Optional[int] = ..., next_restart_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., main_process_started_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_token_grant_failure: _Optional[_Union[TokenGrantFailureObservation, _Mapping]] = ...) -> None: ...
+    def __init__(self, agent_pod: _Optional[str] = ..., agent_fd: _Optional[str] = ..., sandbox_fd: _Optional[str] = ..., conditions: _Optional[_Iterable[_Union[SandboxCondition, _Mapping]]] = ..., phase: _Optional[_Union[SandboxPhase, str]] = ..., current_policy_version: _Optional[int] = ..., main_process_instance_id: _Optional[str] = ..., exit_code: _Optional[int] = ..., endpoint_statuses: _Optional[_Iterable[_Union[EndpointStatus, _Mapping]]] = ..., configuration_admission: _Optional[_Union[SandboxConfigurationAdmission, _Mapping]] = ..., configuration_activated: bool = ..., provisioning: _Optional[_Union[SandboxProvisioning, _Mapping]] = ..., restart_count: _Optional[int] = ..., next_restart_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., main_process_started_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_token_grant_failure: _Optional[_Union[TokenGrantFailureObservation, _Mapping]] = ...) -> None: ...
 
 class SandboxCondition(_message.Message):
     __slots__ = ("type", "status", "reason", "message", "transition_time")
@@ -761,7 +761,7 @@ class CreateSandboxRequest(_message.Message):
     workload_template: str
     request_id: str
     service_exposures: _containers.RepeatedCompositeFieldContainer[SandboxServiceExposure]
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., spec: _Optional[_Union[SandboxSpec, _Mapping]] = ..., name: _Optional[str] = ..., labels: _Optional[_Mapping[str, str]] = ..., annotations: _Optional[_Mapping[str, str]] = ..., await_main_process_attachment: _Optional[bool] = ..., workload_template: _Optional[str] = ..., request_id: _Optional[str] = ..., service_exposures: _Optional[_Iterable[_Union[SandboxServiceExposure, _Mapping]]] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., spec: _Optional[_Union[SandboxSpec, _Mapping]] = ..., name: _Optional[str] = ..., labels: _Optional[_Mapping[str, str]] = ..., annotations: _Optional[_Mapping[str, str]] = ..., await_main_process_attachment: bool = ..., workload_template: _Optional[str] = ..., request_id: _Optional[str] = ..., service_exposures: _Optional[_Iterable[_Union[SandboxServiceExposure, _Mapping]]] = ...) -> None: ...
 
 class UpdateSandboxRequest(_message.Message):
     __slots__ = ("workspace_scope", "name", "image", "command", "environment", "labels", "annotations", "expected_resource_version", "request_id")
@@ -844,7 +844,7 @@ class DeleteSandboxTemplateRequest(_message.Message):
     name: str
     allow_missing: bool
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., allow_missing: _Optional[bool] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., allow_missing: bool = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class SandboxTemplateResponse(_message.Message):
     __slots__ = ("template",)
@@ -958,7 +958,7 @@ class DeleteSandboxRequest(_message.Message):
     name: str
     allow_missing: bool
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., allow_missing: _Optional[bool] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., allow_missing: bool = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class StopSandboxRequest(_message.Message):
     __slots__ = ("workspace_scope", "name", "request_id")
@@ -996,7 +996,7 @@ class ResumeSandboxRequest(_message.Message):
     workspace_scope: _datamodel_pb2.WorkspaceSelector
     name: str
     restart_if_restore_fails: bool
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., restart_if_restore_fails: _Optional[bool] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., restart_if_restore_fails: bool = ...) -> None: ...
 
 class SandboxResponse(_message.Message):
     __slots__ = ("sandbox", "service_urls")
@@ -1037,7 +1037,7 @@ class AttachSandboxProviderResponse(_message.Message):
     sandbox: Sandbox
     attached: bool
     receipt: ProviderMutationReceipt
-    def __init__(self, sandbox: _Optional[_Union[Sandbox, _Mapping]] = ..., attached: _Optional[bool] = ..., receipt: _Optional[_Union[ProviderMutationReceipt, _Mapping]] = ...) -> None: ...
+    def __init__(self, sandbox: _Optional[_Union[Sandbox, _Mapping]] = ..., attached: bool = ..., receipt: _Optional[_Union[ProviderMutationReceipt, _Mapping]] = ...) -> None: ...
 
 class DetachSandboxProviderResponse(_message.Message):
     __slots__ = ("sandbox", "detached", "receipt")
@@ -1047,7 +1047,7 @@ class DetachSandboxProviderResponse(_message.Message):
     sandbox: Sandbox
     detached: bool
     receipt: ProviderMutationReceipt
-    def __init__(self, sandbox: _Optional[_Union[Sandbox, _Mapping]] = ..., detached: _Optional[bool] = ..., receipt: _Optional[_Union[ProviderMutationReceipt, _Mapping]] = ...) -> None: ...
+    def __init__(self, sandbox: _Optional[_Union[Sandbox, _Mapping]] = ..., detached: bool = ..., receipt: _Optional[_Union[ProviderMutationReceipt, _Mapping]] = ...) -> None: ...
 
 class ProviderDesiredIdentity(_message.Message):
     __slots__ = ("sandbox_id", "sandbox", "attachment_epoch", "provider_id", "provider_resource_version", "provider_env_revision", "config_revision", "policy_hash")
@@ -1159,7 +1159,7 @@ class ProviderReadinessObservation(_message.Message):
     launch_environment_installed: bool
     process_instance_id: str
     reason: ProviderReadinessReason
-    def __init__(self, session_id: _Optional[str] = ..., sequence: _Optional[int] = ..., attachment_epoch: _Optional[str] = ..., provider_env_revision: _Optional[int] = ..., config_revision: _Optional[int] = ..., policy_hash: _Optional[str] = ..., credentials_installed: _Optional[bool] = ..., policy_active: _Optional[bool] = ..., launch_environment_installed: _Optional[bool] = ..., process_instance_id: _Optional[str] = ..., reason: _Optional[_Union[ProviderReadinessReason, str]] = ...) -> None: ...
+    def __init__(self, session_id: _Optional[str] = ..., sequence: _Optional[int] = ..., attachment_epoch: _Optional[str] = ..., provider_env_revision: _Optional[int] = ..., config_revision: _Optional[int] = ..., policy_hash: _Optional[str] = ..., credentials_installed: bool = ..., policy_active: bool = ..., launch_environment_installed: bool = ..., process_instance_id: _Optional[str] = ..., reason: _Optional[_Union[ProviderReadinessReason, str]] = ...) -> None: ...
 
 class ProviderReadinessStatus(_message.Message):
     __slots__ = ("receipt", "state", "reason", "observed", "network_instance_id", "observed_time", "evaluated_time", "operation")
@@ -1267,7 +1267,7 @@ class ExposeServiceRequest(_message.Message):
     sandbox: str
     request_id: str
     authorization_mode: ServiceAuthorizationMode
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., domain: _Optional[bool] = ..., sandbox: _Optional[str] = ..., request_id: _Optional[str] = ..., authorization_mode: _Optional[_Union[ServiceAuthorizationMode, str]] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., domain: bool = ..., sandbox: _Optional[str] = ..., request_id: _Optional[str] = ..., authorization_mode: _Optional[_Union[ServiceAuthorizationMode, str]] = ...) -> None: ...
 
 class GetServiceRequest(_message.Message):
     __slots__ = ("workspace_scope", "name", "sandbox")
@@ -1311,7 +1311,7 @@ class DeleteServiceRequest(_message.Message):
     sandbox: str
     allow_missing: bool
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., sandbox: _Optional[str] = ..., allow_missing: _Optional[bool] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., sandbox: _Optional[str] = ..., allow_missing: bool = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class DeleteServiceResponse(_message.Message):
     __slots__ = ("outcome",)
@@ -1335,7 +1335,7 @@ class ServiceEndpoint(_message.Message):
     target_port: int
     domain: bool
     authorization_mode: ServiceAuthorizationMode
-    def __init__(self, metadata: _Optional[_Union[_datamodel_pb2.ObjectMeta, _Mapping]] = ..., sandbox_id: _Optional[str] = ..., sandbox: _Optional[str] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., domain: _Optional[bool] = ..., authorization_mode: _Optional[_Union[ServiceAuthorizationMode, str]] = ...) -> None: ...
+    def __init__(self, metadata: _Optional[_Union[_datamodel_pb2.ObjectMeta, _Mapping]] = ..., sandbox_id: _Optional[str] = ..., sandbox: _Optional[str] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., domain: bool = ..., authorization_mode: _Optional[_Union[ServiceAuthorizationMode, str]] = ...) -> None: ...
 
 class ServiceEndpointResponse(_message.Message):
     __slots__ = ("endpoint", "url")
@@ -1351,7 +1351,7 @@ class RevokeSshSessionRequest(_message.Message):
     ALLOW_MISSING_FIELD_NUMBER: _ClassVar[int]
     token: str
     allow_missing: bool
-    def __init__(self, token: _Optional[str] = ..., allow_missing: _Optional[bool] = ...) -> None: ...
+    def __init__(self, token: _Optional[str] = ..., allow_missing: bool = ...) -> None: ...
 
 class RevokeSshSessionResponse(_message.Message):
     __slots__ = ("outcome",)
@@ -1392,7 +1392,7 @@ class ExecSandboxRequest(_message.Message):
     rows: int
     no_login_shell: bool
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., sandbox: _Optional[str] = ..., command: _Optional[_Iterable[str]] = ..., workdir: _Optional[str] = ..., environment: _Optional[_Mapping[str, str]] = ..., execution_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., stdin: _Optional[bytes] = ..., tty: _Optional[bool] = ..., cols: _Optional[int] = ..., rows: _Optional[int] = ..., no_login_shell: _Optional[bool] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., sandbox: _Optional[str] = ..., command: _Optional[_Iterable[str]] = ..., workdir: _Optional[str] = ..., environment: _Optional[_Mapping[str, str]] = ..., execution_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., stdin: _Optional[bytes] = ..., tty: bool = ..., cols: _Optional[int] = ..., rows: _Optional[int] = ..., no_login_shell: bool = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class ExecSandboxStdout(_message.Message):
     __slots__ = ("data",)
@@ -1476,7 +1476,7 @@ class SshSession(_message.Message):
     token: str
     expiration_time: _timestamp_pb2.Timestamp
     revoked: bool
-    def __init__(self, metadata: _Optional[_Union[_datamodel_pb2.ObjectMeta, _Mapping]] = ..., sandbox_id: _Optional[str] = ..., token: _Optional[str] = ..., expiration_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., revoked: _Optional[bool] = ...) -> None: ...
+    def __init__(self, metadata: _Optional[_Union[_datamodel_pb2.ObjectMeta, _Mapping]] = ..., sandbox_id: _Optional[str] = ..., token: _Optional[str] = ..., expiration_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., revoked: bool = ...) -> None: ...
 
 class WatchSandboxRequest(_message.Message):
     __slots__ = ("workspace_scope", "sandbox", "follow_status", "follow_logs", "follow_events", "log_tail_lines", "event_tail", "stop_on_terminal", "since_time", "log_sources", "log_min_level", "resume_after_cursor")
@@ -1504,7 +1504,7 @@ class WatchSandboxRequest(_message.Message):
     log_sources: _containers.RepeatedScalarFieldContainer[str]
     log_min_level: str
     resume_after_cursor: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., sandbox: _Optional[str] = ..., follow_status: _Optional[bool] = ..., follow_logs: _Optional[bool] = ..., follow_events: _Optional[bool] = ..., log_tail_lines: _Optional[int] = ..., event_tail: _Optional[int] = ..., stop_on_terminal: _Optional[bool] = ..., since_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., log_sources: _Optional[_Iterable[str]] = ..., log_min_level: _Optional[str] = ..., resume_after_cursor: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., sandbox: _Optional[str] = ..., follow_status: bool = ..., follow_logs: bool = ..., follow_events: bool = ..., log_tail_lines: _Optional[int] = ..., event_tail: _Optional[int] = ..., stop_on_terminal: bool = ..., since_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., log_sources: _Optional[_Iterable[str]] = ..., log_min_level: _Optional[str] = ..., resume_after_cursor: _Optional[str] = ...) -> None: ...
 
 class SandboxStreamEvent(_message.Message):
     __slots__ = ("sandbox", "log", "event", "warning", "draft_policy_update", "cursor")
@@ -1647,7 +1647,7 @@ class DeleteProviderRequest(_message.Message):
     name: str
     allow_missing: bool
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., allow_missing: _Optional[bool] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., allow_missing: bool = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class ProviderResponse(_message.Message):
     __slots__ = ("provider", "target_receipts", "mutation_id")
@@ -1781,7 +1781,7 @@ class ProviderProfileCredential(_message.Message):
     token_grant: ProviderCredentialTokenGrant
     token_grant_owners: _containers.RepeatedScalarFieldContainer[str]
     stable_placeholder: bool
-    def __init__(self, name: _Optional[str] = ..., description: _Optional[str] = ..., env_vars: _Optional[_Iterable[str]] = ..., required: _Optional[bool] = ..., auth_style: _Optional[str] = ..., header_name: _Optional[str] = ..., query_param: _Optional[str] = ..., refresh: _Optional[_Union[ProviderCredentialRefresh, _Mapping]] = ..., path_template: _Optional[str] = ..., token_grant: _Optional[_Union[ProviderCredentialTokenGrant, _Mapping]] = ..., token_grant_owners: _Optional[_Iterable[str]] = ..., stable_placeholder: _Optional[bool] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., description: _Optional[str] = ..., env_vars: _Optional[_Iterable[str]] = ..., required: bool = ..., auth_style: _Optional[str] = ..., header_name: _Optional[str] = ..., query_param: _Optional[str] = ..., refresh: _Optional[_Union[ProviderCredentialRefresh, _Mapping]] = ..., path_template: _Optional[str] = ..., token_grant: _Optional[_Union[ProviderCredentialTokenGrant, _Mapping]] = ..., token_grant_owners: _Optional[_Iterable[str]] = ..., stable_placeholder: bool = ...) -> None: ...
 
 class ProviderCredentialRefreshMaterial(_message.Message):
     __slots__ = ("name", "description", "required", "secret")
@@ -1793,7 +1793,7 @@ class ProviderCredentialRefreshMaterial(_message.Message):
     description: str
     required: bool
     secret: bool
-    def __init__(self, name: _Optional[str] = ..., description: _Optional[str] = ..., required: _Optional[bool] = ..., secret: _Optional[bool] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., description: _Optional[str] = ..., required: bool = ..., secret: bool = ...) -> None: ...
 
 class ProviderCredentialRefreshOutput(_message.Message):
     __slots__ = ("output", "credential")
@@ -1936,7 +1936,7 @@ class DeleteProviderRefreshRequest(_message.Message):
     credential_key: str
     allow_missing: bool
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., provider: _Optional[str] = ..., credential_key: _Optional[str] = ..., allow_missing: _Optional[bool] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., provider: _Optional[str] = ..., credential_key: _Optional[str] = ..., allow_missing: bool = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class DeleteProviderRefreshResponse(_message.Message):
     __slots__ = ("outcome",)
@@ -1981,7 +1981,7 @@ class ProviderProfile(_message.Message):
     source: str
     scope: str
     files: _containers.RepeatedCompositeFieldContainer[ProviderProfileFile]
-    def __init__(self, id: _Optional[str] = ..., display_name: _Optional[str] = ..., description: _Optional[str] = ..., category: _Optional[_Union[ProviderProfileCategory, str]] = ..., credentials: _Optional[_Iterable[_Union[ProviderProfileCredential, _Mapping]]] = ..., endpoints: _Optional[_Iterable[_Union[_sandbox_pb2.NetworkEndpoint, _Mapping]]] = ..., binaries: _Optional[_Iterable[_Union[_sandbox_pb2.NetworkBinary, _Mapping]]] = ..., inference_capable: _Optional[bool] = ..., discovery: _Optional[_Union[ProviderProfileDiscovery, _Mapping]] = ..., resource_version: _Optional[int] = ..., annotations: _Optional[_Mapping[str, str]] = ..., source: _Optional[str] = ..., scope: _Optional[str] = ..., files: _Optional[_Iterable[_Union[ProviderProfileFile, _Mapping]]] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., display_name: _Optional[str] = ..., description: _Optional[str] = ..., category: _Optional[_Union[ProviderProfileCategory, str]] = ..., credentials: _Optional[_Iterable[_Union[ProviderProfileCredential, _Mapping]]] = ..., endpoints: _Optional[_Iterable[_Union[_sandbox_pb2.NetworkEndpoint, _Mapping]]] = ..., binaries: _Optional[_Iterable[_Union[_sandbox_pb2.NetworkBinary, _Mapping]]] = ..., inference_capable: bool = ..., discovery: _Optional[_Union[ProviderProfileDiscovery, _Mapping]] = ..., resource_version: _Optional[int] = ..., annotations: _Optional[_Mapping[str, str]] = ..., source: _Optional[str] = ..., scope: _Optional[str] = ..., files: _Optional[_Iterable[_Union[ProviderProfileFile, _Mapping]]] = ...) -> None: ...
 
 class ProviderProfileFile(_message.Message):
     __slots__ = ("path", "content", "env_var")
@@ -2025,7 +2025,7 @@ class ImportProviderProfilesResponse(_message.Message):
     diagnostics: _containers.RepeatedCompositeFieldContainer[ProviderProfileDiagnostic]
     profiles: _containers.RepeatedCompositeFieldContainer[ProviderProfile]
     imported: bool
-    def __init__(self, diagnostics: _Optional[_Iterable[_Union[ProviderProfileDiagnostic, _Mapping]]] = ..., profiles: _Optional[_Iterable[_Union[ProviderProfile, _Mapping]]] = ..., imported: _Optional[bool] = ...) -> None: ...
+    def __init__(self, diagnostics: _Optional[_Iterable[_Union[ProviderProfileDiagnostic, _Mapping]]] = ..., profiles: _Optional[_Iterable[_Union[ProviderProfile, _Mapping]]] = ..., imported: bool = ...) -> None: ...
 
 class UpdateProviderProfilesRequest(_message.Message):
     __slots__ = ("workspace_scope", "profile", "expected_resource_version", "id", "request_id")
@@ -2049,7 +2049,7 @@ class UpdateProviderProfilesResponse(_message.Message):
     diagnostics: _containers.RepeatedCompositeFieldContainer[ProviderProfileDiagnostic]
     profile: ProviderProfile
     updated: bool
-    def __init__(self, diagnostics: _Optional[_Iterable[_Union[ProviderProfileDiagnostic, _Mapping]]] = ..., profile: _Optional[_Union[ProviderProfile, _Mapping]] = ..., updated: _Optional[bool] = ...) -> None: ...
+    def __init__(self, diagnostics: _Optional[_Iterable[_Union[ProviderProfileDiagnostic, _Mapping]]] = ..., profile: _Optional[_Union[ProviderProfile, _Mapping]] = ..., updated: bool = ...) -> None: ...
 
 class LintProviderProfilesRequest(_message.Message):
     __slots__ = ("workspace_scope", "profiles")
@@ -2067,7 +2067,7 @@ class LintProviderProfilesResponse(_message.Message):
     diagnostics: _containers.RepeatedCompositeFieldContainer[ProviderProfileDiagnostic]
     valid: bool
     supports_stable_placeholder: bool
-    def __init__(self, diagnostics: _Optional[_Iterable[_Union[ProviderProfileDiagnostic, _Mapping]]] = ..., valid: _Optional[bool] = ..., supports_stable_placeholder: _Optional[bool] = ...) -> None: ...
+    def __init__(self, diagnostics: _Optional[_Iterable[_Union[ProviderProfileDiagnostic, _Mapping]]] = ..., valid: bool = ..., supports_stable_placeholder: bool = ...) -> None: ...
 
 class DeleteProviderResponse(_message.Message):
     __slots__ = ("outcome",)
@@ -2085,7 +2085,7 @@ class DeleteProviderProfileRequest(_message.Message):
     id: str
     allow_missing: bool
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., id: _Optional[str] = ..., allow_missing: _Optional[bool] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., id: _Optional[str] = ..., allow_missing: bool = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class DeleteProviderProfileResponse(_message.Message):
     __slots__ = ("outcome",)
@@ -2101,7 +2101,7 @@ class GetSandboxProviderEnvironmentRequest(_message.Message):
     sandbox_id: str
     supports_static_credential_bindings: bool
     supports_stable_placeholder_environment_keys: bool
-    def __init__(self, sandbox_id: _Optional[str] = ..., supports_static_credential_bindings: _Optional[bool] = ..., supports_stable_placeholder_environment_keys: _Optional[bool] = ...) -> None: ...
+    def __init__(self, sandbox_id: _Optional[str] = ..., supports_static_credential_bindings: bool = ..., supports_stable_placeholder_environment_keys: bool = ...) -> None: ...
 
 class StaticCredentialEndpointBinding(_message.Message):
     __slots__ = ("host", "port", "path")
@@ -2184,7 +2184,7 @@ class GetSandboxProviderEnvironmentResponse(_message.Message):
     files: _containers.ScalarMap[str, str]
     stable_placeholder_environment_keys: _containers.RepeatedScalarFieldContainer[str]
     supports_stable_placeholder_environment_keys: bool
-    def __init__(self, environment: _Optional[_Mapping[str, str]] = ..., provider_env_revision: _Optional[int] = ..., credential_expiration_times: _Optional[_Mapping[str, _timestamp_pb2.Timestamp]] = ..., dynamic_credentials: _Optional[_Mapping[str, ProviderProfileCredential]] = ..., static_credential_bindings: _Optional[_Mapping[str, StaticCredentialBinding]] = ..., non_secret_environment_keys: _Optional[_Iterable[str]] = ..., provider_attachment_epoch: _Optional[str] = ..., policy_hash: _Optional[str] = ..., readiness_reason: _Optional[_Union[ProviderReadinessReason, str]] = ..., files: _Optional[_Mapping[str, str]] = ..., stable_placeholder_environment_keys: _Optional[_Iterable[str]] = ..., supports_stable_placeholder_environment_keys: _Optional[bool] = ...) -> None: ...
+    def __init__(self, environment: _Optional[_Mapping[str, str]] = ..., provider_env_revision: _Optional[int] = ..., credential_expiration_times: _Optional[_Mapping[str, _timestamp_pb2.Timestamp]] = ..., dynamic_credentials: _Optional[_Mapping[str, ProviderProfileCredential]] = ..., static_credential_bindings: _Optional[_Mapping[str, StaticCredentialBinding]] = ..., non_secret_environment_keys: _Optional[_Iterable[str]] = ..., provider_attachment_epoch: _Optional[str] = ..., policy_hash: _Optional[str] = ..., readiness_reason: _Optional[_Union[ProviderReadinessReason, str]] = ..., files: _Optional[_Mapping[str, str]] = ..., stable_placeholder_environment_keys: _Optional[_Iterable[str]] = ..., supports_stable_placeholder_environment_keys: bool = ...) -> None: ...
 
 class ProviderEnvironmentValue(_message.Message):
     __slots__ = ("name", "value", "classification", "static_credential_binding", "expiration_time", "stable_placeholder")
@@ -2200,7 +2200,7 @@ class ProviderEnvironmentValue(_message.Message):
     static_credential_binding: StaticCredentialBinding
     expiration_time: _timestamp_pb2.Timestamp
     stable_placeholder: bool
-    def __init__(self, name: _Optional[str] = ..., value: _Optional[str] = ..., classification: _Optional[_Union[ProviderEnvironmentValueClassification, str]] = ..., static_credential_binding: _Optional[_Union[StaticCredentialBinding, _Mapping]] = ..., expiration_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., stable_placeholder: _Optional[bool] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., value: _Optional[str] = ..., classification: _Optional[_Union[ProviderEnvironmentValueClassification, str]] = ..., static_credential_binding: _Optional[_Union[StaticCredentialBinding, _Mapping]] = ..., expiration_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., stable_placeholder: bool = ...) -> None: ...
 
 class ProviderEnvironmentSnapshot(_message.Message):
     __slots__ = ("provider_env_revision", "values", "dynamic_credentials", "provider_attachment_epoch", "policy_hash", "readiness_reason", "files")
@@ -2286,7 +2286,7 @@ class UpdateConfigRequest(_message.Message):
     annotations: _containers.ScalarMap[str, str]
     sandbox: str
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., policy: _Optional[_Union[_sandbox_pb2.SandboxPolicy, _Mapping]] = ..., setting_key: _Optional[str] = ..., setting_value: _Optional[_Union[_sandbox_pb2.SettingValue, _Mapping]] = ..., delete_setting: _Optional[bool] = ..., merge_operations: _Optional[_Iterable[_Union[PolicyMergeOperation, _Mapping]]] = ..., expected_resource_version: _Optional[int] = ..., annotations: _Optional[_Mapping[str, str]] = ..., sandbox: _Optional[str] = ..., request_id: _Optional[str] = ..., **kwargs) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., policy: _Optional[_Union[_sandbox_pb2.SandboxPolicy, _Mapping]] = ..., setting_key: _Optional[str] = ..., setting_value: _Optional[_Union[_sandbox_pb2.SettingValue, _Mapping]] = ..., delete_setting: bool = ..., merge_operations: _Optional[_Iterable[_Union[PolicyMergeOperation, _Mapping]]] = ..., expected_resource_version: _Optional[int] = ..., annotations: _Optional[_Mapping[str, str]] = ..., sandbox: _Optional[str] = ..., request_id: _Optional[str] = ..., **kwargs) -> None: ...
 
 class PolicyMergeOperation(_message.Message):
     __slots__ = ("add_rule", "remove_endpoint", "remove_rule", "add_deny_rules", "add_allow_rules", "remove_binary")
@@ -2342,7 +2342,7 @@ class L7RuleTarget(_message.Message):
     path: str
     binaries: _containers.RepeatedCompositeFieldContainer[_sandbox_pb2.NetworkBinary]
     any_binary: bool
-    def __init__(self, rule_name: _Optional[str] = ..., host: _Optional[str] = ..., ports: _Optional[_Iterable[int]] = ..., path: _Optional[str] = ..., binaries: _Optional[_Iterable[_Union[_sandbox_pb2.NetworkBinary, _Mapping]]] = ..., any_binary: _Optional[bool] = ...) -> None: ...
+    def __init__(self, rule_name: _Optional[str] = ..., host: _Optional[str] = ..., ports: _Optional[_Iterable[int]] = ..., path: _Optional[str] = ..., binaries: _Optional[_Iterable[_Union[_sandbox_pb2.NetworkBinary, _Mapping]]] = ..., any_binary: bool = ...) -> None: ...
 
 class AddDenyRules(_message.Message):
     __slots__ = ("deny_rules", "target")
@@ -2387,7 +2387,7 @@ class UpdateConfigResponse(_message.Message):
     settings_revision: int
     deleted: bool
     annotations: _containers.ScalarMap[str, str]
-    def __init__(self, version: _Optional[int] = ..., policy_hash: _Optional[str] = ..., settings_revision: _Optional[int] = ..., deleted: _Optional[bool] = ..., annotations: _Optional[_Mapping[str, str]] = ...) -> None: ...
+    def __init__(self, version: _Optional[int] = ..., policy_hash: _Optional[str] = ..., settings_revision: _Optional[int] = ..., deleted: bool = ..., annotations: _Optional[_Mapping[str, str]] = ...) -> None: ...
 
 class GetSandboxPolicyStatusRequest(_message.Message):
     __slots__ = ("workspace_scope", "version", "sandbox")
@@ -2588,7 +2588,7 @@ class SupervisorHello(_message.Message):
     redirected: bool
     supports_session_redirect: bool
     supports_config_push: bool
-    def __init__(self, sandbox_id: _Optional[str] = ..., instance_id: _Optional[str] = ..., connection_epoch: _Optional[int] = ..., supports_provider_readiness: _Optional[bool] = ..., redirected: _Optional[bool] = ..., supports_session_redirect: _Optional[bool] = ..., supports_config_push: _Optional[bool] = ...) -> None: ...
+    def __init__(self, sandbox_id: _Optional[str] = ..., instance_id: _Optional[str] = ..., connection_epoch: _Optional[int] = ..., supports_provider_readiness: bool = ..., redirected: bool = ..., supports_session_redirect: bool = ..., supports_config_push: bool = ...) -> None: ...
 
 class SessionAccepted(_message.Message):
     __slots__ = ("session_id", "bootstrap", "config_push_enabled", "heartbeat_interval")
@@ -2600,7 +2600,7 @@ class SessionAccepted(_message.Message):
     bootstrap: ConfigUpdate
     config_push_enabled: bool
     heartbeat_interval: _duration_pb2.Duration
-    def __init__(self, session_id: _Optional[str] = ..., bootstrap: _Optional[_Union[ConfigUpdate, _Mapping]] = ..., config_push_enabled: _Optional[bool] = ..., heartbeat_interval: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, session_id: _Optional[str] = ..., bootstrap: _Optional[_Union[ConfigUpdate, _Mapping]] = ..., config_push_enabled: bool = ..., heartbeat_interval: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class ConfigUpdate(_message.Message):
     __slots__ = ("update_id", "sandbox_config", "provider_environment")
@@ -2620,7 +2620,7 @@ class ConfigApplyFailure(_message.Message):
     code: str
     message: str
     retryable: bool
-    def __init__(self, code: _Optional[str] = ..., message: _Optional[str] = ..., retryable: _Optional[bool] = ...) -> None: ...
+    def __init__(self, code: _Optional[str] = ..., message: _Optional[str] = ..., retryable: bool = ...) -> None: ...
 
 class ConfigUpdateResult(_message.Message):
     __slots__ = ("update_id", "outcome", "failure", "admission", "policy_load")
@@ -2644,7 +2644,7 @@ class PolicyLoadResult(_message.Message):
     version: int
     loaded: bool
     error: str
-    def __init__(self, version: _Optional[int] = ..., loaded: _Optional[bool] = ..., error: _Optional[str] = ...) -> None: ...
+    def __init__(self, version: _Optional[int] = ..., loaded: bool = ..., error: _Optional[str] = ...) -> None: ...
 
 class SessionRejected(_message.Message):
     __slots__ = ("reason",)
@@ -2776,13 +2776,13 @@ class PeerNotifyConfigUpdateRequest(_message.Message):
     workspace: str
     all_connected: bool
     provider: PeerConfigProviderTarget
-    def __init__(self, sandbox: _Optional[_Union[PeerConfigSandboxTarget, _Mapping]] = ..., workspace: _Optional[str] = ..., all_connected: _Optional[bool] = ..., provider: _Optional[_Union[PeerConfigProviderTarget, _Mapping]] = ...) -> None: ...
+    def __init__(self, sandbox: _Optional[_Union[PeerConfigSandboxTarget, _Mapping]] = ..., workspace: _Optional[str] = ..., all_connected: bool = ..., provider: _Optional[_Union[PeerConfigProviderTarget, _Mapping]] = ...) -> None: ...
 
 class PeerNotifyConfigUpdateResponse(_message.Message):
     __slots__ = ("stale_owner",)
     STALE_OWNER_FIELD_NUMBER: _ClassVar[int]
     stale_owner: bool
-    def __init__(self, stale_owner: _Optional[bool] = ...) -> None: ...
+    def __init__(self, stale_owner: bool = ...) -> None: ...
 
 class RelayOpenResult(_message.Message):
     __slots__ = ("channel_id", "success", "error")
@@ -2792,7 +2792,7 @@ class RelayOpenResult(_message.Message):
     channel_id: str
     success: bool
     error: str
-    def __init__(self, channel_id: _Optional[str] = ..., success: _Optional[bool] = ..., error: _Optional[str] = ...) -> None: ...
+    def __init__(self, channel_id: _Optional[str] = ..., success: bool = ..., error: _Optional[str] = ...) -> None: ...
 
 class RelayClose(_message.Message):
     __slots__ = ("channel_id", "reason")
@@ -2850,7 +2850,7 @@ class DenialSummary(_message.Message):
     denial_stage: str
     l7_request_samples: _containers.RepeatedCompositeFieldContainer[L7RequestSample]
     l7_inspection_active: bool
-    def __init__(self, sandbox_id: _Optional[str] = ..., host: _Optional[str] = ..., port: _Optional[int] = ..., binary: _Optional[str] = ..., ancestors: _Optional[_Iterable[str]] = ..., deny_reason: _Optional[str] = ..., first_seen_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_seen_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., count: _Optional[int] = ..., suppressed_count: _Optional[int] = ..., total_count: _Optional[int] = ..., sample_cmdlines: _Optional[_Iterable[str]] = ..., binary_sha256: _Optional[str] = ..., persistent: _Optional[bool] = ..., denial_stage: _Optional[str] = ..., l7_request_samples: _Optional[_Iterable[_Union[L7RequestSample, _Mapping]]] = ..., l7_inspection_active: _Optional[bool] = ...) -> None: ...
+    def __init__(self, sandbox_id: _Optional[str] = ..., host: _Optional[str] = ..., port: _Optional[int] = ..., binary: _Optional[str] = ..., ancestors: _Optional[_Iterable[str]] = ..., deny_reason: _Optional[str] = ..., first_seen_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_seen_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., count: _Optional[int] = ..., suppressed_count: _Optional[int] = ..., total_count: _Optional[int] = ..., sample_cmdlines: _Optional[_Iterable[str]] = ..., binary_sha256: _Optional[str] = ..., persistent: bool = ..., denial_stage: _Optional[str] = ..., l7_request_samples: _Optional[_Iterable[_Union[L7RequestSample, _Mapping]]] = ..., l7_inspection_active: bool = ...) -> None: ...
 
 class DenialGroupCount(_message.Message):
     __slots__ = ("deny_group", "denied_count")
@@ -3044,7 +3044,7 @@ class ApproveAllDraftChunksRequest(_message.Message):
     approvals: _containers.RepeatedCompositeFieldContainer[DraftChunkApproval]
     sandbox: str
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., include_security_flagged: _Optional[bool] = ..., approvals: _Optional[_Iterable[_Union[DraftChunkApproval, _Mapping]]] = ..., sandbox: _Optional[str] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., include_security_flagged: bool = ..., approvals: _Optional[_Iterable[_Union[DraftChunkApproval, _Mapping]]] = ..., sandbox: _Optional[str] = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class ApproveAllDraftChunksResponse(_message.Message):
     __slots__ = ("policy_version", "policy_hash", "chunks_approved", "chunks_skipped")
@@ -3199,7 +3199,7 @@ class DeleteWorkspaceRequest(_message.Message):
     name: str
     allow_missing: bool
     request_id: str
-    def __init__(self, name: _Optional[str] = ..., allow_missing: _Optional[bool] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., allow_missing: bool = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class DeleteWorkspaceResponse(_message.Message):
     __slots__ = ("outcome",)
@@ -3245,7 +3245,7 @@ class RemoveWorkspaceMemberRequest(_message.Message):
     principal_subject: str
     allow_missing: bool
     request_id: str
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., principal_subject: _Optional[str] = ..., allow_missing: _Optional[bool] = ..., request_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., principal_subject: _Optional[str] = ..., allow_missing: bool = ..., request_id: _Optional[str] = ...) -> None: ...
 
 class RemoveWorkspaceMemberResponse(_message.Message):
     __slots__ = ("outcome",)
@@ -3381,7 +3381,7 @@ class SandboxProvisioning(_message.Message):
     admission_start_time: _timestamp_pb2.Timestamp
     driver_operation_pending: bool
     driver_operation_id: str
-    def __init__(self, attempt_id: _Optional[str] = ..., configuration_change_id: _Optional[str] = ..., configuration_change_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., first_rejection_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., deadline: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., timeout_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., cleanup_completed_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., cleanup_error: _Optional[str] = ..., cleanup_retry_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., attachment_change_id: _Optional[str] = ..., attachment_change_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., preparation_deadline: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., admission_start_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., driver_operation_pending: _Optional[bool] = ..., driver_operation_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, attempt_id: _Optional[str] = ..., configuration_change_id: _Optional[str] = ..., configuration_change_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., first_rejection_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., deadline: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., timeout_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., cleanup_completed_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., cleanup_error: _Optional[str] = ..., cleanup_retry_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., attachment_change_id: _Optional[str] = ..., attachment_change_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., preparation_deadline: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., admission_start_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., driver_operation_pending: bool = ..., driver_operation_id: _Optional[str] = ...) -> None: ...
 
 class SandboxServiceExposure(_message.Message):
     __slots__ = ("service", "target_port", "authorization_mode")

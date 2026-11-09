@@ -121,7 +121,7 @@ class FilesystemPolicy(_message.Message):
     include_workdir: bool
     read_only: _containers.RepeatedScalarFieldContainer[str]
     read_write: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, include_workdir: _Optional[bool] = ..., read_only: _Optional[_Iterable[str]] = ..., read_write: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, include_workdir: bool = ..., read_only: _Optional[_Iterable[str]] = ..., read_write: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class LandlockPolicy(_message.Message):
     __slots__ = ("compatibility",)
@@ -240,7 +240,7 @@ class NetworkEndpoint(_message.Message):
     allow_uninspected_credentials: bool
     provider_credentialed: bool
     token_grant_owner: str
-    def __init__(self, host: _Optional[str] = ..., port: _Optional[int] = ..., protocol: _Optional[str] = ..., tls: _Optional[_Union[NetworkTlsMode, str]] = ..., enforcement: _Optional[_Union[NetworkEnforcementMode, str]] = ..., access: _Optional[_Union[NetworkAccessPreset, str]] = ..., rules: _Optional[_Iterable[_Union[L7Rule, _Mapping]]] = ..., allowed_ips: _Optional[_Iterable[str]] = ..., ports: _Optional[_Iterable[int]] = ..., deny_rules: _Optional[_Iterable[_Union[L7DenyRule, _Mapping]]] = ..., allow_encoded_slash: _Optional[bool] = ..., persisted_queries: _Optional[str] = ..., graphql_persisted_queries: _Optional[_Mapping[str, GraphqlOperation]] = ..., graphql_max_body_bytes: _Optional[int] = ..., path: _Optional[str] = ..., websocket_credential_rewrite: _Optional[bool] = ..., request_body_credential_rewrite: _Optional[bool] = ..., advisor_proposed: _Optional[bool] = ..., credential_signing: _Optional[str] = ..., signing_service: _Optional[str] = ..., signing_region: _Optional[str] = ..., json_rpc_max_body_bytes: _Optional[int] = ..., mcp: _Optional[_Union[McpOptions, _Mapping]] = ..., credential_binding: _Optional[_Union[NetworkCredentialBinding, _Mapping]] = ..., allow_uninspected_credentials: _Optional[bool] = ..., provider_credentialed: _Optional[bool] = ..., token_grant_owner: _Optional[str] = ...) -> None: ...
+    def __init__(self, host: _Optional[str] = ..., port: _Optional[int] = ..., protocol: _Optional[str] = ..., tls: _Optional[_Union[NetworkTlsMode, str]] = ..., enforcement: _Optional[_Union[NetworkEnforcementMode, str]] = ..., access: _Optional[_Union[NetworkAccessPreset, str]] = ..., rules: _Optional[_Iterable[_Union[L7Rule, _Mapping]]] = ..., allowed_ips: _Optional[_Iterable[str]] = ..., ports: _Optional[_Iterable[int]] = ..., deny_rules: _Optional[_Iterable[_Union[L7DenyRule, _Mapping]]] = ..., allow_encoded_slash: bool = ..., persisted_queries: _Optional[str] = ..., graphql_persisted_queries: _Optional[_Mapping[str, GraphqlOperation]] = ..., graphql_max_body_bytes: _Optional[int] = ..., path: _Optional[str] = ..., websocket_credential_rewrite: bool = ..., request_body_credential_rewrite: bool = ..., advisor_proposed: bool = ..., credential_signing: _Optional[str] = ..., signing_service: _Optional[str] = ..., signing_region: _Optional[str] = ..., json_rpc_max_body_bytes: _Optional[int] = ..., mcp: _Optional[_Union[McpOptions, _Mapping]] = ..., credential_binding: _Optional[_Union[NetworkCredentialBinding, _Mapping]] = ..., allow_uninspected_credentials: bool = ..., provider_credentialed: bool = ..., token_grant_owner: _Optional[str] = ...) -> None: ...
 
 class McpOptions(_message.Message):
     __slots__ = ("strict_tool_names", "allow_all_known_mcp_methods", "versions")
@@ -250,7 +250,7 @@ class McpOptions(_message.Message):
     strict_tool_names: bool
     allow_all_known_mcp_methods: bool
     versions: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, strict_tool_names: _Optional[bool] = ..., allow_all_known_mcp_methods: _Optional[bool] = ..., versions: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, strict_tool_names: bool = ..., allow_all_known_mcp_methods: bool = ..., versions: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class GraphqlOperation(_message.Message):
     __slots__ = ("operation_type", "operation_name", "fields")
@@ -387,7 +387,7 @@ class SettingValue(_message.Message):
     bool_value: bool
     int_value: int
     bytes_value: bytes
-    def __init__(self, string_value: _Optional[str] = ..., bool_value: _Optional[bool] = ..., int_value: _Optional[int] = ..., bytes_value: _Optional[bytes] = ...) -> None: ...
+    def __init__(self, string_value: _Optional[str] = ..., bool_value: bool = ..., int_value: _Optional[int] = ..., bytes_value: _Optional[bytes] = ...) -> None: ...
 
 class EffectiveSetting(_message.Message):
     __slots__ = ("value", "scope")
@@ -442,7 +442,7 @@ class SandboxConfigSnapshot(_message.Message):
     configuration_error: str
     settings_revision: int
     service_routes: _containers.RepeatedCompositeFieldContainer[SandboxServiceRoute]
-    def __init__(self, policy: _Optional[_Union[SandboxPolicy, _Mapping]] = ..., version: _Optional[int] = ..., policy_hash: _Optional[str] = ..., settings: _Optional[_Mapping[str, EffectiveSetting]] = ..., config_revision: _Optional[int] = ..., policy_source: _Optional[_Union[PolicySource, str]] = ..., global_policy_version: _Optional[int] = ..., provider_env_revision: _Optional[int] = ..., supervisor_middleware_services: _Optional[_Iterable[_Union[SupervisorMiddlewareService, _Mapping]]] = ..., workspace: _Optional[str] = ..., policy_validation_failure_mode: _Optional[str] = ..., extension_authentication_enabled: _Optional[bool] = ..., configuration_admitted: _Optional[bool] = ..., provider_attachment_epoch: _Optional[str] = ..., configuration_instance_id: _Optional[str] = ..., configuration_error: _Optional[str] = ..., settings_revision: _Optional[int] = ..., service_routes: _Optional[_Iterable[_Union[SandboxServiceRoute, _Mapping]]] = ...) -> None: ...
+    def __init__(self, policy: _Optional[_Union[SandboxPolicy, _Mapping]] = ..., version: _Optional[int] = ..., policy_hash: _Optional[str] = ..., settings: _Optional[_Mapping[str, EffectiveSetting]] = ..., config_revision: _Optional[int] = ..., policy_source: _Optional[_Union[PolicySource, str]] = ..., global_policy_version: _Optional[int] = ..., provider_env_revision: _Optional[int] = ..., supervisor_middleware_services: _Optional[_Iterable[_Union[SupervisorMiddlewareService, _Mapping]]] = ..., workspace: _Optional[str] = ..., policy_validation_failure_mode: _Optional[str] = ..., extension_authentication_enabled: bool = ..., configuration_admitted: bool = ..., provider_attachment_epoch: _Optional[str] = ..., configuration_instance_id: _Optional[str] = ..., configuration_error: _Optional[str] = ..., settings_revision: _Optional[int] = ..., service_routes: _Optional[_Iterable[_Union[SandboxServiceRoute, _Mapping]]] = ...) -> None: ...
 
 class GetSandboxConfigResponse(_message.Message):
     __slots__ = ("policy", "version", "policy_hash", "settings", "config_revision", "policy_source", "global_policy_version", "provider_env_revision", "supervisor_middleware_services", "workspace", "policy_validation_failure_mode", "extension_authentication_enabled", "provider_attachment_epoch", "configuration_admitted", "configuration_error", "configuration_instance_id", "settings_revision", "service_routes")
@@ -489,7 +489,7 @@ class GetSandboxConfigResponse(_message.Message):
     configuration_instance_id: str
     settings_revision: int
     service_routes: _containers.RepeatedCompositeFieldContainer[SandboxServiceRoute]
-    def __init__(self, policy: _Optional[_Union[SandboxPolicy, _Mapping]] = ..., version: _Optional[int] = ..., policy_hash: _Optional[str] = ..., settings: _Optional[_Mapping[str, EffectiveSetting]] = ..., config_revision: _Optional[int] = ..., policy_source: _Optional[_Union[PolicySource, str]] = ..., global_policy_version: _Optional[int] = ..., provider_env_revision: _Optional[int] = ..., supervisor_middleware_services: _Optional[_Iterable[_Union[SupervisorMiddlewareService, _Mapping]]] = ..., workspace: _Optional[str] = ..., policy_validation_failure_mode: _Optional[str] = ..., extension_authentication_enabled: _Optional[bool] = ..., provider_attachment_epoch: _Optional[str] = ..., configuration_admitted: _Optional[bool] = ..., configuration_error: _Optional[str] = ..., configuration_instance_id: _Optional[str] = ..., settings_revision: _Optional[int] = ..., service_routes: _Optional[_Iterable[_Union[SandboxServiceRoute, _Mapping]]] = ...) -> None: ...
+    def __init__(self, policy: _Optional[_Union[SandboxPolicy, _Mapping]] = ..., version: _Optional[int] = ..., policy_hash: _Optional[str] = ..., settings: _Optional[_Mapping[str, EffectiveSetting]] = ..., config_revision: _Optional[int] = ..., policy_source: _Optional[_Union[PolicySource, str]] = ..., global_policy_version: _Optional[int] = ..., provider_env_revision: _Optional[int] = ..., supervisor_middleware_services: _Optional[_Iterable[_Union[SupervisorMiddlewareService, _Mapping]]] = ..., workspace: _Optional[str] = ..., policy_validation_failure_mode: _Optional[str] = ..., extension_authentication_enabled: bool = ..., provider_attachment_epoch: _Optional[str] = ..., configuration_admitted: bool = ..., configuration_error: _Optional[str] = ..., configuration_instance_id: _Optional[str] = ..., settings_revision: _Optional[int] = ..., service_routes: _Optional[_Iterable[_Union[SandboxServiceRoute, _Mapping]]] = ...) -> None: ...
 
 class SandboxServiceRoute(_message.Message):
     __slots__ = ("endpoint_id", "name", "target_port", "authorization_mode", "resource_version")
@@ -525,4 +525,4 @@ class SupervisorMiddlewareService(_message.Message):
     allow_insecure_transport: bool
     binding_policy: SupervisorMiddlewareBindingPolicy
     bindings: _containers.RepeatedScalarFieldContainer[SupervisorMiddlewareBinding]
-    def __init__(self, name: _Optional[str] = ..., grpc_endpoint: _Optional[str] = ..., max_payload_bytes: _Optional[int] = ..., request_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., tls_ca_cert_pem: _Optional[bytes] = ..., audience: _Optional[str] = ..., allow_insecure_transport: _Optional[bool] = ..., binding_policy: _Optional[_Union[SupervisorMiddlewareBindingPolicy, str]] = ..., bindings: _Optional[_Iterable[_Union[SupervisorMiddlewareBinding, str]]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., grpc_endpoint: _Optional[str] = ..., max_payload_bytes: _Optional[int] = ..., request_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., tls_ca_cert_pem: _Optional[bytes] = ..., audience: _Optional[str] = ..., allow_insecure_transport: bool = ..., binding_policy: _Optional[_Union[SupervisorMiddlewareBindingPolicy, str]] = ..., bindings: _Optional[_Iterable[_Union[SupervisorMiddlewareBinding, str]]] = ...) -> None: ...

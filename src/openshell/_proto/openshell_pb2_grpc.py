@@ -6,7 +6,7 @@ import warnings
 from . import openshell_pb2 as openshell__pb2
 from . import sandbox_pb2 as sandbox__pb2
 
-GRPC_GENERATED_VERSION = '1.85.1'
+GRPC_GENERATED_VERSION = '1.78.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -26,7 +26,7 @@ if _version_not_supported:
     )
 
 
-class OpenShellStub:
+class OpenShellStub(object):
     """OpenShell service provides sandbox, provider, and runtime management capabilities.
 
     Conventions:
@@ -475,7 +475,7 @@ class OpenShellStub:
                 _registered_method=True)
 
 
-class OpenShellServicer:
+class OpenShellServicer(object):
     """OpenShell service provides sandbox, provider, and runtime management capabilities.
 
     Conventions:
@@ -1598,7 +1598,7 @@ def add_OpenShellServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class OpenShell:
+class OpenShell(object):
     """OpenShell service provides sandbox, provider, and runtime management capabilities.
 
     Conventions:
@@ -3932,7 +3932,7 @@ class OpenShell:
             _registered_method=True)
 
 
-class SandboxUpdatesStub:
+class SandboxUpdatesStub(object):
     """Optional sandbox mutations are separate from OpenShell so existing generated
     OpenShell server implementations remain source-compatible.
     """
@@ -3950,7 +3950,7 @@ class SandboxUpdatesStub:
                 _registered_method=True)
 
 
-class SandboxUpdatesServicer:
+class SandboxUpdatesServicer(object):
     """Optional sandbox mutations are separate from OpenShell so existing generated
     OpenShell server implementations remain source-compatible.
     """
@@ -3981,7 +3981,7 @@ def add_SandboxUpdatesServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class SandboxUpdates:
+class SandboxUpdates(object):
     """Optional sandbox mutations are separate from OpenShell so existing generated
     OpenShell server implementations remain source-compatible.
     """
