@@ -2541,21 +2541,23 @@ class GetSandboxLogsResponse(_message.Message):
     def __init__(self, logs: _Optional[_Iterable[_Union[SandboxLogLine, _Mapping]]] = ..., buffer_total: _Optional[int] = ...) -> None: ...
 
 class SupervisorMessage(_message.Message):
-    __slots__ = ("hello", "heartbeat", "relay_open_result", "relay_close", "config_update_result")
+    __slots__ = ("hello", "heartbeat", "relay_open_result", "relay_close", "config_update_result", "service_advertisement")
     HELLO_FIELD_NUMBER: _ClassVar[int]
     HEARTBEAT_FIELD_NUMBER: _ClassVar[int]
     RELAY_OPEN_RESULT_FIELD_NUMBER: _ClassVar[int]
     RELAY_CLOSE_FIELD_NUMBER: _ClassVar[int]
     CONFIG_UPDATE_RESULT_FIELD_NUMBER: _ClassVar[int]
+    SERVICE_ADVERTISEMENT_FIELD_NUMBER: _ClassVar[int]
     hello: SupervisorHello
     heartbeat: SupervisorHeartbeat
     relay_open_result: RelayOpenResult
     relay_close: RelayClose
     config_update_result: ConfigUpdateResult
-    def __init__(self, hello: _Optional[_Union[SupervisorHello, _Mapping]] = ..., heartbeat: _Optional[_Union[SupervisorHeartbeat, _Mapping]] = ..., relay_open_result: _Optional[_Union[RelayOpenResult, _Mapping]] = ..., relay_close: _Optional[_Union[RelayClose, _Mapping]] = ..., config_update_result: _Optional[_Union[ConfigUpdateResult, _Mapping]] = ...) -> None: ...
+    service_advertisement: SupervisorServiceAdvertisement
+    def __init__(self, hello: _Optional[_Union[SupervisorHello, _Mapping]] = ..., heartbeat: _Optional[_Union[SupervisorHeartbeat, _Mapping]] = ..., relay_open_result: _Optional[_Union[RelayOpenResult, _Mapping]] = ..., relay_close: _Optional[_Union[RelayClose, _Mapping]] = ..., config_update_result: _Optional[_Union[ConfigUpdateResult, _Mapping]] = ..., service_advertisement: _Optional[_Union[SupervisorServiceAdvertisement, _Mapping]] = ...) -> None: ...
 
 class GatewayMessage(_message.Message):
-    __slots__ = ("session_accepted", "session_rejected", "heartbeat", "relay_open", "relay_close", "session_redirect", "config_update")
+    __slots__ = ("session_accepted", "session_rejected", "heartbeat", "relay_open", "relay_close", "session_redirect", "config_update", "service_route_lease")
     SESSION_ACCEPTED_FIELD_NUMBER: _ClassVar[int]
     SESSION_REJECTED_FIELD_NUMBER: _ClassVar[int]
     HEARTBEAT_FIELD_NUMBER: _ClassVar[int]
@@ -2563,6 +2565,7 @@ class GatewayMessage(_message.Message):
     RELAY_CLOSE_FIELD_NUMBER: _ClassVar[int]
     SESSION_REDIRECT_FIELD_NUMBER: _ClassVar[int]
     CONFIG_UPDATE_FIELD_NUMBER: _ClassVar[int]
+    SERVICE_ROUTE_LEASE_FIELD_NUMBER: _ClassVar[int]
     session_accepted: SessionAccepted
     session_rejected: SessionRejected
     heartbeat: GatewayHeartbeat
@@ -2570,10 +2573,11 @@ class GatewayMessage(_message.Message):
     relay_close: RelayClose
     session_redirect: SessionRedirect
     config_update: ConfigUpdate
-    def __init__(self, session_accepted: _Optional[_Union[SessionAccepted, _Mapping]] = ..., session_rejected: _Optional[_Union[SessionRejected, _Mapping]] = ..., heartbeat: _Optional[_Union[GatewayHeartbeat, _Mapping]] = ..., relay_open: _Optional[_Union[RelayOpen, _Mapping]] = ..., relay_close: _Optional[_Union[RelayClose, _Mapping]] = ..., session_redirect: _Optional[_Union[SessionRedirect, _Mapping]] = ..., config_update: _Optional[_Union[ConfigUpdate, _Mapping]] = ...) -> None: ...
+    service_route_lease: ServiceRouteLease
+    def __init__(self, session_accepted: _Optional[_Union[SessionAccepted, _Mapping]] = ..., session_rejected: _Optional[_Union[SessionRejected, _Mapping]] = ..., heartbeat: _Optional[_Union[GatewayHeartbeat, _Mapping]] = ..., relay_open: _Optional[_Union[RelayOpen, _Mapping]] = ..., relay_close: _Optional[_Union[RelayClose, _Mapping]] = ..., session_redirect: _Optional[_Union[SessionRedirect, _Mapping]] = ..., config_update: _Optional[_Union[ConfigUpdate, _Mapping]] = ..., service_route_lease: _Optional[_Union[ServiceRouteLease, _Mapping]] = ...) -> None: ...
 
 class SupervisorHello(_message.Message):
-    __slots__ = ("sandbox_id", "instance_id", "connection_epoch", "supports_provider_readiness", "redirected", "supports_session_redirect", "supports_config_push")
+    __slots__ = ("sandbox_id", "instance_id", "connection_epoch", "supports_provider_readiness", "redirected", "supports_session_redirect", "supports_config_push", "supports_service_advertisements")
     SANDBOX_ID_FIELD_NUMBER: _ClassVar[int]
     INSTANCE_ID_FIELD_NUMBER: _ClassVar[int]
     CONNECTION_EPOCH_FIELD_NUMBER: _ClassVar[int]
@@ -2581,6 +2585,7 @@ class SupervisorHello(_message.Message):
     REDIRECTED_FIELD_NUMBER: _ClassVar[int]
     SUPPORTS_SESSION_REDIRECT_FIELD_NUMBER: _ClassVar[int]
     SUPPORTS_CONFIG_PUSH_FIELD_NUMBER: _ClassVar[int]
+    SUPPORTS_SERVICE_ADVERTISEMENTS_FIELD_NUMBER: _ClassVar[int]
     sandbox_id: str
     instance_id: str
     connection_epoch: int
@@ -2588,7 +2593,8 @@ class SupervisorHello(_message.Message):
     redirected: bool
     supports_session_redirect: bool
     supports_config_push: bool
-    def __init__(self, sandbox_id: _Optional[str] = ..., instance_id: _Optional[str] = ..., connection_epoch: _Optional[int] = ..., supports_provider_readiness: bool = ..., redirected: bool = ..., supports_session_redirect: bool = ..., supports_config_push: bool = ...) -> None: ...
+    supports_service_advertisements: bool
+    def __init__(self, sandbox_id: _Optional[str] = ..., instance_id: _Optional[str] = ..., connection_epoch: _Optional[int] = ..., supports_provider_readiness: bool = ..., redirected: bool = ..., supports_session_redirect: bool = ..., supports_config_push: bool = ..., supports_service_advertisements: bool = ...) -> None: ...
 
 class SessionAccepted(_message.Message):
     __slots__ = ("session_id", "bootstrap", "config_push_enabled", "heartbeat_interval")
@@ -3412,3 +3418,27 @@ class EndpointFailure(_message.Message):
     upstream_http_status: int
     request_id: str
     def __init__(self, domain: _Optional[_Union[EndpointFailureDomain, str]] = ..., code: _Optional[str] = ..., recovery_action: _Optional[_Union[ProviderCredentialRefreshRecoveryAction, str]] = ..., provider: _Optional[str] = ..., credential_key: _Optional[str] = ..., stage: _Optional[str] = ..., upstream_http_status: _Optional[int] = ..., request_id: _Optional[str] = ...) -> None: ...
+
+class ServiceRouteLease(_message.Message):
+    __slots__ = ("sequence", "duration", "expires_at")
+    SEQUENCE_FIELD_NUMBER: _ClassVar[int]
+    DURATION_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    sequence: int
+    duration: _duration_pb2.Duration
+    expires_at: _timestamp_pb2.Timestamp
+    def __init__(self, sequence: _Optional[int] = ..., duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., expires_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class SupervisorServiceAdvertisement(_message.Message):
+    __slots__ = ("lease_sequence", "configuration_instance_id", "config_revision", "routes", "service_domain")
+    LEASE_SEQUENCE_FIELD_NUMBER: _ClassVar[int]
+    CONFIGURATION_INSTANCE_ID_FIELD_NUMBER: _ClassVar[int]
+    CONFIG_REVISION_FIELD_NUMBER: _ClassVar[int]
+    ROUTES_FIELD_NUMBER: _ClassVar[int]
+    SERVICE_DOMAIN_FIELD_NUMBER: _ClassVar[int]
+    lease_sequence: int
+    configuration_instance_id: str
+    config_revision: int
+    routes: _containers.RepeatedCompositeFieldContainer[_sandbox_pb2.SandboxServiceRoute]
+    service_domain: str
+    def __init__(self, lease_sequence: _Optional[int] = ..., configuration_instance_id: _Optional[str] = ..., config_revision: _Optional[int] = ..., routes: _Optional[_Iterable[_Union[_sandbox_pb2.SandboxServiceRoute, _Mapping]]] = ..., service_domain: _Optional[str] = ...) -> None: ...
