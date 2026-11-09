@@ -66,6 +66,16 @@ Shared test fixtures come from core's `sdk/conformance/` and are copied into
 `tests/fixtures/`. `mise run conformance:check` compares them with core at the
 pinned ref.
 
+## Core bumps and drift
+
+Automation watches core for new tags and opens a pull request that moves the
+pin, labeled `core-bump` plus `stable` or `prerelease`. If a bump needs SDK
+changes, push them to the same branch.
+
+A nightly job checks core's `main` for breaking proto changes and RPCs the SDK
+doesn't cover yet, and keeps one issue labeled `core-drift` up to date. See
+[scripts/README.md](scripts/README.md) for how both work.
+
 ## Releases
 
 SDK releases follow core releases: SDK `X.Y.Z` is built from core `vX.Y.Z`, and

@@ -65,17 +65,18 @@ fi
 """
 
 [tasks."conformance:check"]
-description = "Fail if vendored fixtures or the E2E workload Dockerfile differ from core at the pinned ref"
+description = "Fail if a file copied from core (scripts/vendored-core-files.txt) differs from core at the pinned ref"
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
 core=$(mktemp -d)
 trap 'rm -rf "$core"' EXIT
-scripts/fetch-core.sh "$OPENSHELL_CORE_REF" "$core" sdk/conformance e2e/python/Dockerfile.workload
-for fixture in oauth-client-credentials.json oauth-client-credentials.json.license; do
-  diff -u "$core/sdk/conformance/$fixture" "tests/fixtures/$fixture"
-done
-diff -u "$core/e2e/python/Dockerfile.workload" tests/e2e/Dockerfile.workload
+files=$(grep -v '^#' scripts/vendored-core-files.txt)
+# shellcheck disable=SC2046 # one argument per core path
+scripts/fetch-core.sh "$OPENSHELL_CORE_REF" "$core" $(awk '{ print $1 }' <<<"$files")
+while read -r src dst; do
+  diff -u "$core/$src" "$dst"
+done <<<"$files"
 """
 
 [tasks.lint]
@@ -143,3 +144,15 @@ done
 [tasks.ci]
 description = "Run the full CI pipeline"
 depends = ["check", "test", "build"]
+
+[tasks."core:tags"]
+description = "List core release tags newer than the pin (newest pre-release only, --all for every tag)"
+run = "scripts/core-sync/core-tags.sh"
+
+[tasks."core:bump"]
+description = "Open the update proposal for a core tag: mise run core:bump -- <tag> [--dry-run]"
+run = "scripts/core-sync/open-bump-pr.sh"
+
+[tasks."core:drift"]
+description = "Compare core main with the pin: mise run core:drift -- --out <report.md>"
+run = "scripts/core-sync/drift-check.sh"
