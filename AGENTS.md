@@ -7,7 +7,7 @@ release model.
 ## Commands
 
 - `mise run ci` runs the full pipeline (format check, lint, type check, proto
-  check, conformance check, unit tests, build).
+  check, vendored-file check, unit tests, build).
 - `mise run proto:gen` regenerates `src/openshell/_proto` from core at the ref
   pinned in `OPENSHELL_CORE_REF` (`mise.toml`). Never edit generated files by
   hand.
@@ -22,7 +22,7 @@ release model.
 - Unit tests live in `tests/` and are named `*_test.py`; fixtures go in
   `tests/fixtures/`.
 - Files copied from core must stay identical to core at the pin;
-  `mise run conformance:check` compares them.
+  `mise run vendored:check` compares them.
 - New files need only the license line `SPDX-License-Identifier: Apache-2.0`
   in a comment. Keep the existing headers as they are.
 

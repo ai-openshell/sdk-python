@@ -16,7 +16,7 @@ virtual environment. `mise tasks` lists every task. The ones you need most:
 | Task | What it does |
 |------|--------------|
 | `mise run ci` | Everything CI runs: checks, unit tests, build |
-| `mise run check` | Format check, lint, type check, proto check, conformance check |
+| `mise run check` | Format check, lint, type check, proto check, vendored-file check |
 | `mise run format` | Format the code |
 | `mise run test` | Unit tests; `UV_PYTHON=3.11` picks the interpreter |
 | `mise run build` | Build the wheel and sdist, verify them, and install them on Python 3.11 |
@@ -63,8 +63,18 @@ generated files; change the pin and run `mise run proto:gen`.
 Building a wheel or sdist needs neither a core checkout nor network access because the generated bindings are committed. A change to the core pin makes the generated API changes visible in the diff.
 
 Shared test fixtures come from core's `sdk/conformance/` and are copied into
-`tests/fixtures/`. `mise run conformance:check` compares them with core at the
+`tests/fixtures/`. `mise run vendored:check` compares them with core at the
 pinned ref.
+
+## Core bumps and drift
+
+Automation watches core for new tags and opens a pull request that moves the
+pin, labeled `core-bump` plus `stable` or `prerelease`. If a bump needs SDK
+changes, push them to the same branch.
+
+A nightly job checks core's `main` for breaking proto changes and RPCs the SDK
+doesn't cover yet, and keeps one issue labeled `core-drift` up to date. See
+[scripts/README.md](scripts/README.md) for how both work.
 
 ## Releases
 
