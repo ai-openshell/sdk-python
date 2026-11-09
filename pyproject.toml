@@ -55,7 +55,7 @@ dev = [
     "types-pyyaml>=6.0.12.20260518",
     "mypy-protobuf>=5.1",
     "types-grpcio>=1.0.0.20251009",
-    "types-protobuf>=6.32,<7",
+    "types-protobuf>=6.32,<8",
 ]
 
 # mise pins uv exactly (mise.toml); this rejects older versions when uv is
