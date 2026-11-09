@@ -1,76 +1,154 @@
-# OpenShell Python SDK
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/NVIDIA/OpenShell/main/docs/brand/assets/openshell-banner-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/NVIDIA/OpenShell/main/docs/brand/assets/openshell-banner-light.png">
+  <img alt="OpenShell" src="https://raw.githubusercontent.com/NVIDIA/OpenShell/main/docs/brand/assets/openshell-banner-light.png" width="430">
+</picture>
 
-The `openshell` package is the Python client for the
-[OpenShell](https://github.com/NVIDIA/OpenShell) gateway: sandbox lifecycle,
-templates, workspaces, exec, and provider credentials, plus the generated gRPC
-bindings under `openshell._proto`.
+# Python SDK for OpenShell
 
-```shell
-pip install openshell
-```
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue)](https://github.com/ai-openshell/sdk-python/blob/main/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/openshell?logo=pypi)](https://pypi.org/project/openshell/)
+[![Security policy](https://img.shields.io/badge/Security-Report%20a%20Vulnerability-red)](https://github.com/ai-openshell/sdk-python/blob/main/SECURITY.md)
+[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen)](https://docs.nvidia.com/openshell/latest/sdk/python)
 
-The SDK moved here from NVIDIA/OpenShell. The package name, import paths, and
-API are unchanged, including `openshell._proto`. Releases published from
-NVIDIA/OpenShell stay on PyPI.
+Use the Python SDK to manage [OpenShell](https://github.com/NVIDIA/OpenShell) sandboxes from applications, notebooks, and automation. Create sandboxes, run commands and Python functions, and manage templates, workspaces, and provider credentials through the gateway.
 
-## Development
+See the [Python SDK documentation](https://docs.nvidia.com/openshell/latest/sdk/python) for connection options, authentication, and generated gRPC bindings.
 
-Tools are managed by [mise](https://mise.jdx.dev/) and dependencies by
-[uv](https://docs.astral.sh/uv/). The Python version is pinned in
-`.python-version`, which both read. See [CONTRIBUTING.md](CONTRIBUTING.md) for
-setup, commit rules and the release model, and [SECURITY.md](SECURITY.md) to
-report a vulnerability.
+## Installation
 
-```shell
-mise run ci          # checks, tests, build, and install smoke test
-mise run check       # format, lint, typecheck, proto and fixture drift
-mise run test        # unit tests; UV_PYTHON=3.11 picks the interpreter
-mise run proto:gen   # regenerate src/openshell/_proto from the pinned protos
-mise run core:version
-```
+The SDK requires Python 3.11 or later and a [running OpenShell gateway](https://docs.nvidia.com/openshell/latest/about/installation). Installing the `openshell` package installs only the Python client.
 
-## Core version and generated bindings
-
-The bindings are generated from `proto/` in NVIDIA/OpenShell at the ref in
-`OPENSHELL_CORE_REF` (`mise.toml`, currently `v0.1.7`) and committed under
-`src/openshell/_proto`. `buf export` fetches the protos, the same way sdk-go
-reads them, and `grpcio-tools` generates the bindings:
-
-- Building a wheel or sdist needs neither a core checkout nor network access.
-- A change of the pin shows the effect on the generated API in its diff.
-- `mise run proto:check` fails when the committed bindings differ from the
-  pinned protos, and `mise run conformance:check` does the same for the
-  vendored test fixtures and `tests/e2e/Dockerfile.workload`.
-
-## E2E tests
-
-`tests/e2e` runs against a real gateway; `mise run test` skips it. CI runs it
-against the published gateway of the pinned core version, with the Docker
-compute driver. To run it locally, you need Docker with the compose plugin:
+With uv, add the SDK to your project:
 
 ```shell
-mise run e2e:image
-scripts/e2e/start-gateway.sh "$(mise run -q core:version)" --default-image openshell/e2e-python:dev
-OPENSHELL_GATEWAY=e2e mise run e2e
-scripts/e2e/stop-gateway.sh
+uv add openshell
 ```
 
-`e2e:image` builds the sandbox image from `tests/e2e/Dockerfile.workload`, a
-copy of core's, with the Python version from `.python-version` and
-`cloudpickle`, so `Sandbox.exec_python` can run the client's callables.
+Or install it with pip:
 
-`start-gateway.sh` is meant for throwaway hosts. It registers `e2e` as the
-active gateway, and `stop-gateway.sh` removes every sandbox container labelled
-with core's default namespace. Set `XDG_CONFIG_HOME` to keep your own gateway
-registrations apart.
+```shell
+pip install -U openshell
+```
 
-## History
+## Quickstart
 
-The history up to the move was imported from NVIDIA/OpenShell at `v0.1.7`.
-The scripts that extracted and verified it are not on `main`. They are kept at
-the `migration/v0.1.7` tag, in
-[hack/migration](https://github.com/ai-openshell/sdk-python/tree/migration/v0.1.7/hack/migration).
+Before running this example, [start a gateway](https://docs.nvidia.com/openshell/latest/about/installation) or [register an existing running gateway](https://docs.nvidia.com/openshell/latest/how-it-works/gateways/overview#register-an-existing-gateway). Then select it with the CLI. The SDK reuses its endpoint, TLS configuration, and authentication state.
+
+```python
+from openshell import Sandbox
+
+with Sandbox(workspace="default") as sandbox:
+    result = sandbox.exec(["echo", "Hello from OpenShell"])
+    print(result.stdout, end="")
+    if result.exit_code != 0:
+        raise RuntimeError(result.stderr)
+```
+
+`Sandbox` creates a sandbox, waits for readiness, and deletes it when the context exits. This example uses the gateway's default workload image and the `default` workspace.
+
+## Usage examples
+
+### Check SDK and gateway versions
+
+Connect to the active gateway and print both versions:
+
+```python
+import openshell
+from openshell import SandboxClient
+
+print(f"SDK version: {openshell.__version__}")
+with SandboxClient.from_active_cluster() as client:
+    print(f"Gateway version: {client.health().version}")
+```
+
+Pass `cluster="my-gateway"` to select a registered gateway by name. For OIDC gateways, the client refreshes expiring tokens and saves the updated token bundle by default.
+
+### List sandboxes
+
+Sandbox operations require an explicit workspace. List methods return a lazy `Pager`, which fetches one page at a time:
+
+```python
+from openshell import SandboxClient
+
+with SandboxClient.from_active_cluster() as client:
+    for page in client.list(workspace="default", page_size=100):
+        for sandbox in page.items:
+            print(sandbox.name, sandbox.id)
+```
+
+Use `client.list_all(workspace="default")` to collect every page into a list.
+
+### Run commands in an existing sandbox
+
+Use `sandbox` to attach by name. Set `delete_on_exit=False` to keep the sandbox after the context exits:
+
+```python
+from openshell import Sandbox
+
+with Sandbox(
+    workspace="default",
+    sandbox="my-sandbox",
+    delete_on_exit=False,
+) as sandbox:
+    result = sandbox.exec(
+        ["sh", "-c", "echo Starting; ls /tmp"],
+        stream_output=True,
+        timeout_seconds=30,
+    )
+    print(f"Exit code: {result.exit_code}")
+```
+
+`exec()` returns an `ExecResult` with `stdout`, `stderr`, and `exit_code`. With `stream_output=True`, it also prints output as it arrives.
+
+### Authenticate service automation
+
+For an OIDC gateway that supports the OAuth client credentials flow, supply a renewable authentication provider:
+
+```python
+import os
+
+from openshell import ClientCredentialsAuth, SandboxClient
+
+auth = ClientCredentialsAuth(
+    issuer="https://idp.example.com/realms/openshell",
+    client_id="openshell-service",
+    client_secret=lambda: os.environ["OPENSHELL_OIDC_CLIENT_SECRET"],
+    audience="openshell-gateway",
+)
+
+with SandboxClient.from_active_cluster(client_credentials=auth) as client:
+    print(client.health().version)
+```
+
+Configure the issuer, client ID, and audience for your identity provider. Non-loopback gateway connections using client credentials require TLS. See [gateway authentication](https://docs.nvidia.com/openshell/latest/how-it-works/gateways/authentication) for setup.
+
+## Documentation
+
+- [Python SDK guide](https://docs.nvidia.com/openshell/latest/sdk/python): connections, provider credentials, and generated RPCs.
+- [Sandboxes](https://docs.nvidia.com/openshell/latest/how-it-works/sandboxes/overview): lifecycle, workload images, and templates.
+- [API errors](https://docs.nvidia.com/openshell/latest/sdk/api-errors): structured gateway errors and error handling.
+
+The package includes generated gRPC bindings under `openshell._proto` for access to the underlying gateway API. `SandboxClient` is synchronous; generated stubs support synchronous and asynchronous gRPC channels.
+
+## Supported core versions
+
+Use SDK and gateway versions from the same OpenShell release when possible. SDK releases follow core releases: SDK `X.Y.Z` is built from core `vX.Y.Z`.
+
+The generated bindings currently target core `v0.1.7`, pinned by `OPENSHELL_CORE_REF` in `mise.toml`.
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/ai-openshell/sdk-python/blob/main/CONTRIBUTING.md) for development setup, checks, end-to-end tests, and release conventions. The project uses [mise](https://mise.jdx.dev/) for tools and [uv](https://docs.astral.sh/uv/) for Python dependencies.
+
+Report vulnerabilities through the [security policy](https://github.com/ai-openshell/sdk-python/blob/main/SECURITY.md).
+
+## Repository history
+
+The SDK moved from NVIDIA/OpenShell to this repository. The PyPI package name, import paths, and API are unchanged, including `openshell._proto`. Earlier releases remain available on PyPI.
+
+History through core `v0.1.7` was imported from NVIDIA/OpenShell. The extraction and verification scripts are preserved under [hack/migration at the migration/v0.1.7 tag](https://github.com/ai-openshell/sdk-python/tree/migration/v0.1.7/hack/migration).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE).
+[Apache-2.0](https://github.com/ai-openshell/sdk-python/blob/main/LICENSE).

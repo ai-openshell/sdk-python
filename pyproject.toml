@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "openshell"
 dynamic = ["version"]
-description = "OpenShell is the safe, private runtime for autonomous AI agents. "
+description = "Python SDK for OpenShell sandbox management and command execution."
 license = "Apache-2.0"
 readme = "README.md"
 authors = [{ name = "NVIDIA Inc." }]
@@ -21,7 +21,6 @@ dependencies = [
     "protobuf>=4.25",
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Information Technology",
@@ -36,11 +35,11 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS :: MacOS X",
 ]
-keywords = ["agent", "sandbox", "nvidia"]
+keywords = ["openshell", "sdk", "agent", "sandbox", "nvidia"]
 
 [project.urls]
 source = "https://github.com/ai-openshell/sdk-python"
-documentation = "https://docs.nvidia.com/openshell/latest/"
+documentation = "https://docs.nvidia.com/openshell/latest/sdk/python"
 
 [dependency-groups]
 dev = [
