@@ -76,9 +76,7 @@ def _request_sandbox(request: Any) -> str:
 
 def _client_credentials_fixture() -> dict[str, Any]:
     return json.loads(
-        (
-            Path(__file__).parents[2] / "sdk/conformance/oauth-client-credentials.json"
-        ).read_text()
+        (Path(__file__).parent / "fixtures/oauth-client-credentials.json").read_text()
     )
 
 

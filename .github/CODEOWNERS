@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# The sdk team owns the SDK; OpenShell maintainers review as a fallback.
+# An infra review for CI and the release scripts comes back with #15.
+* @ai-openshell/sdk @ai-openshell/maintainers

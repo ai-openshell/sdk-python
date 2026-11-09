@@ -12,7 +12,7 @@ import pytest
 
 
 def _load_verifier_module():
-    path = Path(__file__).resolve().parents[1] / "tasks/scripts/verify-python-wheel.py"
+    path = Path(__file__).resolve().parents[1] / "scripts/verify-python-wheel.py"
     spec = importlib.util.spec_from_file_location("openshell_wheel_verifier", path)
     assert spec is not None
     assert spec.loader is not None
