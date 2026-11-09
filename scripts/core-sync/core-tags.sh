@@ -10,7 +10,8 @@
 # stable version. By default every newer stable tag is printed, plus the
 # newest pre-release when it is newer than all of them: one proposal for the
 # current release train instead of one per pre-release. --all prints every
-# newer tag. --pin overrides the pin, OPENSHELL_CORE_REF in mise.toml.
+# newer tag. --pin overrides the pin, OPENSHELL_CORE_REF in mise.toml. The pin
+# must be a release tag; a commit SHA fails.
 set -euo pipefail
 
 repo=${CORE_REPO:-NVIDIA/OpenShell}
@@ -27,6 +28,9 @@ done
 
 [ -n "$pin" ] || pin=$(sed -n 's/^OPENSHELL_CORE_REF = "\(.*\)"$/\1/p' mise.toml)
 [ -n "$pin" ] || { echo "ERROR: no OPENSHELL_CORE_REF in mise.toml" >&2; exit 1; }
+
+[[ "$pin" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-pre\.[0-9]+)?$ ]] ||
+  { echo "ERROR: pin '$pin' is not a release tag; commit SHA pins are not supported by core-sync" >&2; exit 1; }
 
 # key <tag>: "major minor patch rank pre" with rank 1 for stable, 0 for pre.
 key() {

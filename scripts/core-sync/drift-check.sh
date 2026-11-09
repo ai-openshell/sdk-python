@@ -36,6 +36,10 @@ case $out in /*) ;; *) out="$(pwd)/$out" ;; esac
 pin_of() { sed -n 's/^OPENSHELL_CORE_REF = "\(.*\)"$/\1/p'; }
 pin=$(pin_of <mise.toml)
 [ -n "$pin" ] || { echo "ERROR: no OPENSHELL_CORE_REF in mise.toml" >&2; exit 1; }
+[[ "$pin" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-pre\.[0-9]+)?$ ]] || {
+  echo "ERROR: pin '$pin' is not a release tag; commit SHA pins are not supported by core-sync" >&2
+  exit 1
+}
 main_sha=$(git ls-remote "$core_url" refs/heads/main | cut -f1)
 [ -n "$main_sha" ] || { echo "ERROR: cannot resolve core main" >&2; exit 1; }
 

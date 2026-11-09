@@ -14,9 +14,12 @@
 # for older tags. --dry-run does the local part, prints the PR body, and
 # changes nothing on GitHub.
 #
-# Skips the tag when branch core/<tag> exists on origin or any PR from it
-# exists (merged or closed), so a closed proposal is never reopened. When the
-# core tag no longer exists, closes an open proposal for it.
+# Skips the tag when any PR from branch core/<tag> exists (open, merged, or
+# closed), so a closed proposal is never reopened. A branch on origin without
+# a PR is the leftover of a run that pushed but failed to open the PR; the
+# run rebuilds it and replaces the branch (force-with-lease) so the PR gets
+# opened. When the core tag no longer exists, closes an open proposal for it.
+# The current pin must be a release tag; a commit SHA pin stops the run.
 # Git identity and GH_TOKEN come from the environment (the App in CI).
 set -euo pipefail
 
@@ -84,10 +87,6 @@ if ! err=$(gh api "repos/$core_repo/git/ref/tags/$tag" --silent 2>&1); then
   exit 0
 fi
 
-if [ -n "$(git ls-remote --heads origin "$branch")" ]; then
-  echo "Branch $branch exists on origin; skipping $tag."
-  exit 0
-fi
 # Any earlier proposal is final: merged, closed by a maintainer, or closed as
 # superseded by a newer pre-release. Its branch may be gone, so ask for PRs.
 prev=$(gh pr list -R "$sdk_repo" --head "$branch" --state all --json number,state \
@@ -96,11 +95,17 @@ if [ -n "$prev" ]; then
   echo "Proposal $prev exists for $tag already; skipping."
   exit 0
 fi
+# No PR, but the branch may exist: an earlier run pushed it and then failed
+# to open the PR. Remember its tip so the push replaces exactly that.
+stale_tip=$(git ls-remote --heads origin "$branch" | cut -f1)
+[ -z "$stale_tip" ] || echo "Branch $branch exists on origin without a PR; rebuilding it for $tag."
 
 git fetch --quiet origin
 git rev-parse --verify --quiet "$base^{commit}" >/dev/null || die "base $base is not a commit"
 old=$(git show "$base:mise.toml" | pin_of)
 [ -n "$old" ] || die "no OPENSHELL_CORE_REF in mise.toml on $base"
+[[ "$old" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-pre\.[0-9]+)?$ ]] ||
+  die "OPENSHELL_CORE_REF on $base is '$old', not a release tag; the core-sync automation does not support commit SHA pins"
 [ "$old" != "$tag" ] || { echo "The pin on $base is $tag already; skipping."; exit 0; }
 
 work=$(mktemp -d)
@@ -190,7 +195,11 @@ if [ "$dry" -eq 1 ]; then
   exit 0
 fi
 
-git push --quiet origin "$branch"
+if [ -n "$stale_tip" ]; then
+  git push --quiet --force-with-lease="$branch:$stale_tip" origin "$branch"
+else
+  git push --quiet origin "$branch"
+fi
 url=$(gh pr create -R "$sdk_repo" --base main --head "$branch" \
   --title "chore(core): track $tag" --body-file "$body" \
   --label core-bump --label "$kind")
