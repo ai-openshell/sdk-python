@@ -40,7 +40,29 @@ reads them, and `grpcio-tools` generates the bindings:
 - A change of the pin shows the effect on the generated API in its diff.
 - `mise run proto:check` fails when the committed bindings differ from the
   pinned protos, and `mise run conformance:check` does the same for the
-  vendored test fixtures.
+  vendored test fixtures and `tests/e2e/Dockerfile.workload`.
+
+## E2E tests
+
+`tests/e2e` runs against a real gateway; `mise run test` skips it. CI runs it
+against the published gateway of the pinned core version, with the Docker
+compute driver. To run it locally, you need Docker with the compose plugin:
+
+```shell
+mise run e2e:image
+scripts/e2e/start-gateway.sh "$(mise run -q core:version)" --default-image openshell/e2e-python:dev
+OPENSHELL_GATEWAY=e2e mise run e2e
+scripts/e2e/stop-gateway.sh
+```
+
+`e2e:image` builds the sandbox image from `tests/e2e/Dockerfile.workload`, a
+copy of core's, with the Python version from `.python-version` and
+`cloudpickle`, so `Sandbox.exec_python` can run the client's callables.
+
+`start-gateway.sh` is meant for throwaway hosts. It registers `e2e` as the
+active gateway, and `stop-gateway.sh` removes every sandbox container labelled
+with core's default namespace. Set `XDG_CONFIG_HOME` to keep your own gateway
+registrations apart.
 
 ## History
 

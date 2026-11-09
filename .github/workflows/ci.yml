@@ -70,6 +70,10 @@ jobs:
       - name: Build, verify, and install the wheel and sdist
         run: mise run build
 
+  e2e:
+    name: e2e
+    uses: ./.github/workflows/e2e.yml
+
   # The one required status check. Its name matches ai-openshell/sdk-go, so
   # rulesets can require `ci` in every SDK repository regardless of the jobs
   # each one runs.
