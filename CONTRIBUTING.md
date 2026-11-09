@@ -20,6 +20,7 @@ virtual environment. `mise tasks` lists every task. The ones you need most:
 | `mise run format` | Format the code |
 | `mise run test` | Unit tests; `UV_PYTHON=3.11` picks the interpreter |
 | `mise run build` | Build the wheel and sdist, verify them, and install them on Python 3.11 |
+| `mise run e2e` | E2E tests against a running gateway; see the README for setup |
 | `mise run proto:gen` | Regenerate the bindings from core at the pinned ref |
 | `mise run core:version` | Print the pinned core version |
 

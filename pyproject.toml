@@ -83,8 +83,6 @@ target-version = "py311"
 line-length = 88
 exclude = ["src/openshell/_proto"]
 
-# The generated bindings are committed, so the tools no longer skip them as
-# gitignored files.
 [tool.ty.src]
 exclude = ["src/openshell/_proto"]
 
@@ -119,7 +117,6 @@ line-ending = "auto"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["*_test.py"]
-python_functions = ["test_*"]
 addopts = "-v --tb=short"
 asyncio_mode = "auto"
 markers = [
