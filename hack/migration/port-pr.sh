@@ -27,7 +27,8 @@
 # Steps:
 #   1. Fetch the change and core's base branch into refs/port-src/<id>/.
 #   2. format-patch the commits limited to the SDK's core paths (see PATHSPECS).
-#   3. Rewrite the paths in the patch headers to this repository's layout
+#   3. Qualify bare #N references in the commit messages as
+#      NVIDIA/OpenShell#N, and rewrite the paths in the patch headers to this repository's layout
 #      (see the sed program in map_paths).
 #   4. git am --3way onto port/<id> from --base. On a conflict, resolve it,
 #      `git add` the files, run `git am --continue`, then rerun with --continue.
@@ -120,6 +121,14 @@ map_paths() {
       s#(a/|b/|from |to )e2e/python/test_([^/ ]+)\.py#\1tests/e2e/\2_test.py#g
       s#(a/|b/|from |to )e2e/python/#\1tests/e2e/#g
     }' "$@"
+}
+
+# Qualifies bare #N references in the commit message of each patch, which name
+# core issues and PRs and would otherwise point at this repository. Same rule
+# as message-rules.txt. Only the header and message are touched (up to the
+# first `---` line), never the diff.
+qualify_refs() {
+  sed -E -i '1,/^---$/ s#(^|[^A-Za-z0-9/\#])\#([0-9]+)#\1NVIDIA/OpenShell\#\2#g' "$@"
 }
 
 # The id names the branch and state directory: pr-<n> or the short commit.
@@ -219,6 +228,7 @@ if [ "$cont" -eq 0 ]; then
   set -- "$state_dir"/patches/*.patch
   [ -e "$1" ] || die "$ref has no commits that touch the Python SDK paths"
   map_paths -i "$@"
+  qualify_refs "$@"
   echo "Patches: $# (from $(git rev-parse --short "$from"))"
   if [ -s "$state_dir/outside.txt" ]; then
     echo "Not ported (outside the SDK paths):"

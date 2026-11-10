@@ -54,7 +54,7 @@ Core froze the SDK paths (`Python SDK Freeze` check), so a core PR that still ed
 ../migration/hack/migration/port-pr.sh <core-pr-number | core-commit>
 ```
 
-The script builds `port/<id>` from `origin/main`, maps core paths to this layout, applies the commits with `git am --3way`, runs ruff and the unit tests, and prints the PR body. Nothing is pushed until you rerun with `--continue --push`.
+The script builds `port/<id>` from `origin/main`, maps core paths to this layout, qualifies bare `#N` in commit messages as `NVIDIA/OpenShell#N`, applies the commits with `git am --3way`, runs ruff and the unit tests, and prints the PR body. Nothing is pushed until you rerun with `--continue --push`.
 
 | Core path | Lands at |
 |-----------|----------|
