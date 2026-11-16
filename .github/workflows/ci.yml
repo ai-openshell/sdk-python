@@ -26,6 +26,14 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Check license headers
+        uses: ai-openshell/workflows/spdx-check@0b051efd25c3f7319634fed863d2e03e1bd55d7b
+        with:
+          include: >-
+            *.py *.pyi *.sh *.toml *.yml *.yaml *.json
+            Dockerfile* */Dockerfile*
+          exclude: src/openshell/_proto/*
+
       - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
 
       # fetch-core.sh reads proto/ and sdk/conformance from NVIDIA/OpenShell
