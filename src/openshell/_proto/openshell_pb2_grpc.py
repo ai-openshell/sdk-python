@@ -6,7 +6,7 @@ import warnings
 from . import openshell_pb2 as openshell__pb2
 from . import sandbox_pb2 as sandbox__pb2
 
-GRPC_GENERATED_VERSION = '1.78.0'
+GRPC_GENERATED_VERSION = '1.78.2'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
