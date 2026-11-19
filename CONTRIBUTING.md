@@ -86,7 +86,7 @@ Merging a pull request that moves the pin to a stable core tag releases the SDK.
 changed to a stable tag. Then it:
 
 1. tags `vX.Y.Z` at the merged commit and creates a draft GitHub release, with
-   the pull request's description as notes (`scripts/release/tag-release.sh`);
+   the pull request's description as notes (`mise run release:tag`, shared through ai-openshell/workflows);
 2. builds the wheel and sdist at version `X.Y.Z`, verifies them, and writes
    their checksums;
 3. publishes to PyPI from the `pypi` environment with trusted publishing;

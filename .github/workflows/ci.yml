@@ -38,6 +38,13 @@ jobs:
 
       # fetch-core.sh reads proto/ and sdk/conformance from NVIDIA/OpenShell
       # at the pinned ref (public, no credentials).
+      # The shared core-sync workflows run with the bot token: their pin must
+      # be one commit on ai-openshell/workflows main (not a fork-only commit).
+      - name: Check the core-sync pin
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/core-sync.sh --check-pin
+
       - name: Format, lint, typecheck, proto and fixture drift
         run: mise run check
 
