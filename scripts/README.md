@@ -4,11 +4,11 @@ The workflows under `.github/workflows/` run these scripts, most through a mise 
 
 ## Core sync and release tagging (shared)
 
-The core-sync scripts and the `core-watch` and `core-drift` workflows are shared with the other SDKs through [ai-openshell/workflows](https://github.com/ai-openshell/workflows/tree/main/core-sync), which documents them and the contract this repository implements. `mise.toml` pins the scripts as remote tasks, and `core-watch.yml` and `core-drift.yml` call the shared workflows at the same commit; update the two refs together.
+The core-sync scripts and the `core-watch` and `core-drift` workflows are shared with the other SDKs through [ai-openshell/workflows](https://github.com/ai-openshell/workflows/tree/main/core-sync), which documents them and the contract this repository implements. The workflows (`core-watch.yml`, `core-drift.yml`, and the tag job of `release.yml`) call the shared workflows at one commit, and the shared workflows run that commit's scripts. Locally, `core-sync.sh` runs the scripts of the commit in `core-drift.yml`'s `uses:` line, downloaded once into `~/.cache/openshell-core-sync/`.
 
 | mise task | Runs |
 |-----------|------|
-| `core:tags`, `core:bump`, `core:drift`, `core:drift-issue`, `core:report-failure`, `release:tag` | The shared scripts. |
+| `core:tags`, `core:bump`, `core:drift`, `core:drift-issue`, `core:report-failure`, `release:tag` | The shared scripts, through `core-sync.sh`. |
 | `proto:fetch`, `proto:gen`, `proto:buf`, `check`, `test` | This repository's parts of the contract. |
 | `core:uncovered-rpcs` | `uncovered-rpcs.sh`: RPCs in `src/openshell/_proto` the SDK doesn't call, for the drift report. |
 

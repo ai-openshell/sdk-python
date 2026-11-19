@@ -29,3 +29,7 @@ updates:
       codeql:
         patterns:
           - "github/codeql-action*"
+      # The shared core-sync workflows, all called at one commit.
+      core-sync:
+        patterns:
+          - "ai-openshell/workflows*"

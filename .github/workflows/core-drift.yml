@@ -2,8 +2,8 @@
 
 # Nightly comparison of core main with the pinned core tag; keeps the single
 # "Core main drift" issue current (mise run core:drift). Uses the shared
-# workflow from ai-openshell/workflows (core-sync/). Keep the ref in step with
-# the core-sync tasks in mise.toml.
+# workflow from ai-openshell/workflows (core-sync/). Its commit is the pin for
+# the core-sync scripts too: scripts/core-sync.sh reads it from this line.
 name: core-drift
 
 on:
@@ -16,4 +16,4 @@ permissions:
 
 jobs:
   drift:
-    uses: pimlock/workflows/.github/workflows/core-drift.yml@63d4b041b9b99fdfa3491573d31a537451a427ab # feat/core-sync/pimlock
+    uses: pimlock/workflows/.github/workflows/core-drift.yml@33ae68eb87030b53b479f4ed8426f458c1d52b2d # feat/core-sync/pimlock
