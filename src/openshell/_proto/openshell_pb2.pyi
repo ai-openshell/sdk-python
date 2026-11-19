@@ -2234,6 +2234,22 @@ class ProviderEnvironmentSnapshot(_message.Message):
     files: _containers.ScalarMap[str, str]
     def __init__(self, provider_env_revision: _Optional[int] = ..., values: _Optional[_Iterable[_Union[ProviderEnvironmentValue, _Mapping]]] = ..., dynamic_credentials: _Optional[_Mapping[str, ProviderProfileCredential]] = ..., provider_attachment_epoch: _Optional[str] = ..., policy_hash: _Optional[str] = ..., readiness_reason: _Optional[_Union[ProviderReadinessReason, str]] = ..., files: _Optional[_Mapping[str, str]] = ...) -> None: ...
 
+class GetSandboxProviderAccessTokenRequest(_message.Message):
+    __slots__ = ("credential_key",)
+    CREDENTIAL_KEY_FIELD_NUMBER: _ClassVar[int]
+    credential_key: str
+    def __init__(self, credential_key: _Optional[str] = ...) -> None: ...
+
+class GetSandboxProviderAccessTokenResponse(_message.Message):
+    __slots__ = ("access_token", "expires_after", "token_type")
+    ACCESS_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AFTER_FIELD_NUMBER: _ClassVar[int]
+    TOKEN_TYPE_FIELD_NUMBER: _ClassVar[int]
+    access_token: str
+    expires_after: _duration_pb2.Duration
+    token_type: str
+    def __init__(self, access_token: _Optional[str] = ..., expires_after: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., token_type: _Optional[str] = ...) -> None: ...
+
 class ExchangeProviderSubjectTokenRequest(_message.Message):
     __slots__ = ("sandbox_id", "provider", "credential_key", "supervisor_jwt_svid")
     SANDBOX_ID_FIELD_NUMBER: _ClassVar[int]

@@ -323,6 +323,11 @@ class OpenShellStub(object):
                 request_serializer=openshell__pb2.ExchangeProviderSubjectTokenRequest.SerializeToString,
                 response_deserializer=openshell__pb2.ExchangeProviderSubjectTokenResponse.FromString,
                 _registered_method=True)
+        self.GetSandboxProviderAccessToken = channel.unary_unary(
+                '/openshell.v1.OpenShell/GetSandboxProviderAccessToken',
+                request_serializer=openshell__pb2.GetSandboxProviderAccessTokenRequest.SerializeToString,
+                response_deserializer=openshell__pb2.GetSandboxProviderAccessTokenResponse.FromString,
+                _registered_method=True)
         self.GetSandboxLogs = channel.unary_unary(
                 '/openshell.v1.OpenShell/GetSandboxLogs',
                 request_serializer=openshell__pb2.GetSandboxLogsRequest.SerializeToString,
@@ -902,6 +907,14 @@ class OpenShellServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetSandboxProviderAccessToken(self, request, context):
+        """Obtain the final provider token for the authenticated sandbox session.
+        SPIFFE assertions and intermediate credentials remain in the gateway.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetSandboxLogs(self, request, context):
         """Fetch recent sandbox logs (one-shot).
         """
@@ -1439,6 +1452,11 @@ def add_OpenShellServicer_to_server(servicer, server):
                     servicer.ExchangeProviderSubjectToken,
                     request_deserializer=openshell__pb2.ExchangeProviderSubjectTokenRequest.FromString,
                     response_serializer=openshell__pb2.ExchangeProviderSubjectTokenResponse.SerializeToString,
+            ),
+            'GetSandboxProviderAccessToken': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSandboxProviderAccessToken,
+                    request_deserializer=openshell__pb2.GetSandboxProviderAccessTokenRequest.FromString,
+                    response_serializer=openshell__pb2.GetSandboxProviderAccessTokenResponse.SerializeToString,
             ),
             'GetSandboxLogs': grpc.unary_unary_rpc_method_handler(
                     servicer.GetSandboxLogs,
@@ -3111,6 +3129,33 @@ class OpenShell(object):
             '/openshell.v1.OpenShell/ExchangeProviderSubjectToken',
             openshell__pb2.ExchangeProviderSubjectTokenRequest.SerializeToString,
             openshell__pb2.ExchangeProviderSubjectTokenResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetSandboxProviderAccessToken(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/openshell.v1.OpenShell/GetSandboxProviderAccessToken',
+            openshell__pb2.GetSandboxProviderAccessTokenRequest.SerializeToString,
+            openshell__pb2.GetSandboxProviderAccessTokenResponse.FromString,
             options,
             channel_credentials,
             insecure,

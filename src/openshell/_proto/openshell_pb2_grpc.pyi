@@ -189,6 +189,10 @@ class OpenShellStub:
     """Exchange a stored provider subject token for an intermediate token scoped
     to the calling supervisor's SPIFFE identity.
     """
+    GetSandboxProviderAccessToken: _grpc.UnaryUnaryMultiCallable[_openshell_pb2.GetSandboxProviderAccessTokenRequest, _openshell_pb2.GetSandboxProviderAccessTokenResponse]
+    """Obtain the final provider token for the authenticated sandbox session.
+    SPIFFE assertions and intermediate credentials remain in the gateway.
+    """
     GetSandboxLogs: _grpc.UnaryUnaryMultiCallable[_openshell_pb2.GetSandboxLogsRequest, _openshell_pb2.GetSandboxLogsResponse]
     """Fetch recent sandbox logs (one-shot)."""
     PushSandboxLogs: _grpc.StreamUnaryMultiCallable[_openshell_pb2.PushSandboxLogsRequest, _openshell_pb2.PushSandboxLogsResponse]
@@ -461,6 +465,10 @@ class OpenShellAsyncStub(OpenShellStub):
     ExchangeProviderSubjectToken: _aio.UnaryUnaryMultiCallable[_openshell_pb2.ExchangeProviderSubjectTokenRequest, _openshell_pb2.ExchangeProviderSubjectTokenResponse]  # type: ignore[assignment]
     """Exchange a stored provider subject token for an intermediate token scoped
     to the calling supervisor's SPIFFE identity.
+    """
+    GetSandboxProviderAccessToken: _aio.UnaryUnaryMultiCallable[_openshell_pb2.GetSandboxProviderAccessTokenRequest, _openshell_pb2.GetSandboxProviderAccessTokenResponse]  # type: ignore[assignment]
+    """Obtain the final provider token for the authenticated sandbox session.
+    SPIFFE assertions and intermediate credentials remain in the gateway.
     """
     GetSandboxLogs: _aio.UnaryUnaryMultiCallable[_openshell_pb2.GetSandboxLogsRequest, _openshell_pb2.GetSandboxLogsResponse]  # type: ignore[assignment]
     """Fetch recent sandbox logs (one-shot)."""
@@ -1011,6 +1019,15 @@ class OpenShellServicer:
     ) -> _typing.Union[_openshell_pb2.ExchangeProviderSubjectTokenResponse, _abc.Awaitable[_openshell_pb2.ExchangeProviderSubjectTokenResponse]]:
         """Exchange a stored provider subject token for an intermediate token scoped
         to the calling supervisor's SPIFFE identity.
+        """
+
+    def GetSandboxProviderAccessToken(
+        self,
+        request: _openshell_pb2.GetSandboxProviderAccessTokenRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_openshell_pb2.GetSandboxProviderAccessTokenResponse, _abc.Awaitable[_openshell_pb2.GetSandboxProviderAccessTokenResponse]]:
+        """Obtain the final provider token for the authenticated sandbox session.
+        SPIFFE assertions and intermediate credentials remain in the gateway.
         """
 
     def GetSandboxLogs(
