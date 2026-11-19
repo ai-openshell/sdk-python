@@ -19,6 +19,6 @@ permissions:
 
 jobs:
   watch:
-    uses: pimlock/workflows/.github/workflows/core-watch.yml@33ae68eb87030b53b479f4ed8426f458c1d52b2d # feat/core-sync/pimlock
+    uses: pimlock/workflows/.github/workflows/core-watch.yml@2e0e58cd14e4a3484d0458a40466c77ef48b5f4f # feat/core-sync/pimlock
     with:
       tag: ${{ inputs.tag }}
