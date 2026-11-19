@@ -3,7 +3,5 @@
 # The sdk team owns the SDK; OpenShell maintainers review as a fallback.
 * @ai-openshell/sdk @ai-openshell/maintainers
 
-# CI and the scripts it runs with the bot token or PyPI access need an infra review.
+# CI and what it runs with the bot token or PyPI access need an infra review.
 /.github/ @ai-openshell/infra
-/scripts/core-sync/ @ai-openshell/infra
-/scripts/release/ @ai-openshell/infra

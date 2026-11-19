@@ -41,6 +41,12 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      # Only for the shared release:tag task (git and gh); no tools needed.
+      - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
+        with:
+          install: false
+          cache: false
+
       - id: tag
         name: Tag the release and create a draft
         env:
@@ -56,11 +62,11 @@ jobs:
               echo "::error::$sha is not on main"
               exit 1
             }
-            scripts/release/tag-release.sh --force --sha "$sha" >>"$GITHUB_OUTPUT"
+            mise run --quiet release:tag -- --force --sha "$sha" >>"$GITHUB_OUTPUT"
           else
             # Compare against the commit before the push, so a pin change
             # that isn't the pushed tip still counts.
-            scripts/release/tag-release.sh --since "$BEFORE" >>"$GITHUB_OUTPUT"
+            mise run --quiet release:tag -- --since "$BEFORE" >>"$GITHUB_OUTPUT"
           fi
 
   build:
