@@ -492,18 +492,20 @@ class GetSandboxConfigResponse(_message.Message):
     def __init__(self, policy: _Optional[_Union[SandboxPolicy, _Mapping]] = ..., version: _Optional[int] = ..., policy_hash: _Optional[str] = ..., settings: _Optional[_Mapping[str, EffectiveSetting]] = ..., config_revision: _Optional[int] = ..., policy_source: _Optional[_Union[PolicySource, str]] = ..., global_policy_version: _Optional[int] = ..., provider_env_revision: _Optional[int] = ..., supervisor_middleware_services: _Optional[_Iterable[_Union[SupervisorMiddlewareService, _Mapping]]] = ..., workspace: _Optional[str] = ..., policy_validation_failure_mode: _Optional[str] = ..., extension_authentication_enabled: bool = ..., provider_attachment_epoch: _Optional[str] = ..., configuration_admitted: bool = ..., configuration_error: _Optional[str] = ..., configuration_instance_id: _Optional[str] = ..., settings_revision: _Optional[int] = ..., service_routes: _Optional[_Iterable[_Union[SandboxServiceRoute, _Mapping]]] = ...) -> None: ...
 
 class SandboxServiceRoute(_message.Message):
-    __slots__ = ("endpoint_id", "name", "target_port", "authorization_mode", "resource_version")
+    __slots__ = ("endpoint_id", "name", "target_port", "authorization_mode", "resource_version", "application_hostname")
     ENDPOINT_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TARGET_PORT_FIELD_NUMBER: _ClassVar[int]
     AUTHORIZATION_MODE_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_VERSION_FIELD_NUMBER: _ClassVar[int]
+    APPLICATION_HOSTNAME_FIELD_NUMBER: _ClassVar[int]
     endpoint_id: str
     name: str
     target_port: int
     authorization_mode: int
     resource_version: int
-    def __init__(self, endpoint_id: _Optional[str] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., authorization_mode: _Optional[int] = ..., resource_version: _Optional[int] = ...) -> None: ...
+    application_hostname: str
+    def __init__(self, endpoint_id: _Optional[str] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., authorization_mode: _Optional[int] = ..., resource_version: _Optional[int] = ..., application_hostname: _Optional[str] = ...) -> None: ...
 
 class SupervisorMiddlewareService(_message.Message):
     __slots__ = ("name", "grpc_endpoint", "max_payload_bytes", "request_timeout", "tls_ca_cert_pem", "audience", "allow_insecure_transport", "binding_policy", "bindings")
