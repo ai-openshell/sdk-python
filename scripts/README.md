@@ -10,7 +10,7 @@ The workflows use a GitHub App token from the `sdk-bot` environment (secrets `SD
 
 | File | mise task | Purpose |
 |------|-----------|---------|
-| `core-tags.sh [--all]` | `core:tags` | List NVIDIA/OpenShell release tags newer than the pin: every stable tag, plus the newest pre-release when it is newer than all of them. |
+| `core-tags.sh [--all]` | `core:tags` | List ai-openshell/openshell release tags newer than the pin: every stable tag, plus the newest pre-release when it is newer than all of them. |
 | `open-bump-pr.sh <tag> [--dry-run]` | `core:bump` | Open the update proposal for one core tag: branch `core/<tag>`, pin change, regenerated bindings, refreshed copies of core files, proto diff in the body, labels `core-bump` plus `stable` or `prerelease`. Closes older pre-release proposals. |
 | `bump-pr-body.md` | | PR body template for `open-bump-pr.sh`. |
 | `drift-check.sh --out <file>` | `core:drift` | Compare core `main` with the pin: `buf breaking`, regenerate and run the unit tests, list the RPCs the SDK doesn't call. Writes the markdown report. |
