@@ -586,9 +586,36 @@ def test_exec_forwards_owned_request_id_without_generating_one() -> None:
     assert stub.request is not None
     assert stub.request.request_id == request_id
 
+    context = sandbox_module.Sandbox(workspace="default", sandbox="sandbox-1")
+    context._session = session
+    assert context.exec(["true"], request_id=request_id).exit_code == 0
+    assert stub.request is not None
+    assert stub.request.request_id == request_id
+
     assert client.exec("sandbox-1", ["true"], workspace="default").exit_code == 0
     assert stub.request is not None
     assert stub.request.request_id == ""
+
+
+def test_exec_lost_stream_does_not_retry_with_a_new_request_id() -> None:
+    class LostStreamStub(_FakeStub):
+        calls = 0
+
+        def ExecSandbox(self, request, timeout=None):
+            _ = timeout
+            self.calls += 1
+            self.request = request
+            raise grpc.RpcError("stream lost")
+
+    stub = LostStreamStub()
+    client = _client_with_fake_stub(stub)
+    request_id = str(uuid.uuid4())
+
+    with pytest.raises(grpc.RpcError, match="stream lost"):
+        client.exec("sandbox-1", ["true"], workspace="default", request_id=request_id)
+    assert stub.calls == 1
+    assert stub.request is not None
+    assert stub.request.request_id == request_id
 
 
 @pytest.mark.parametrize(
