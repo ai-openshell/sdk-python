@@ -9,6 +9,7 @@ import os
 import pickle
 import threading
 import time
+import uuid
 from concurrent import futures
 from copy import deepcopy
 from dataclasses import asdict
@@ -558,6 +559,47 @@ def test_exec_sends_stdin_payload() -> None:
     assert result.exit_code == 0
     assert stub.request is not None
     assert stub.request.stdin == b"payload"
+
+
+def test_exec_forwards_owned_request_id_without_generating_one() -> None:
+    stub = _FakeStub()
+    client = _client_with_fake_stub(stub)
+    request_id = str(uuid.uuid4())
+
+    assert (
+        client.exec(
+            "sandbox-1", ["true"], workspace="default", request_id=request_id
+        ).exit_code
+        == 0
+    )
+    assert stub.request is not None
+    assert stub.request.request_id == request_id
+
+    ref = SandboxRef(
+        id="sandbox-1",
+        name="sandbox-1",
+        workspace="default",
+        status=SandboxStatusRef(phase=2, current_policy_version=0),
+    )
+    session = sandbox_module.SandboxSession(client, ref)
+    assert session.exec(["true"], request_id=request_id).exit_code == 0
+    assert stub.request is not None
+    assert stub.request.request_id == request_id
+
+    assert client.exec("sandbox-1", ["true"], workspace="default").exit_code == 0
+    assert stub.request is not None
+    assert stub.request.request_id == ""
+
+
+@pytest.mark.parametrize(
+    "request_id", ["", "not-a-uuid", str(uuid.UUID(int=0)), "A" * 36]
+)
+def test_exec_rejects_invalid_request_id_before_rpc(request_id: str) -> None:
+    stub = _FakeStub()
+    client = _client_with_fake_stub(stub)
+    with pytest.raises(SandboxError, match="canonical nonzero UUID"):
+        client.exec("sandbox-1", ["true"], workspace="default", request_id=request_id)
+    assert stub.request is None
 
 
 def test_exec_python_serializes_callable_payload() -> None:
