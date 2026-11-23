@@ -36,7 +36,7 @@ jobs:
 
       - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
 
-      # fetch-core.sh reads proto/ and sdk/conformance from NVIDIA/OpenShell
+      # fetch-core.sh reads proto/ and sdk/conformance from ai-openshell/openshell
       # at the pinned ref (public, no credentials).
       - name: Format, lint, typecheck, proto and fixture drift
         run: mise run check
