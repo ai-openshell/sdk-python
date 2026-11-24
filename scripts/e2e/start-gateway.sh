@@ -23,7 +23,7 @@
 # including sandboxes of another local gateway that uses the same namespace.
 set -euo pipefail
 
-core_repo=${CORE_REPO:-NVIDIA/OpenShell}
+core_repo=${CORE_REPO:-ai-openshell/openshell}
 name=e2e
 port=8080
 health_port=8081
