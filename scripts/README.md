@@ -17,6 +17,7 @@ The workflows use a GitHub App token from the `sdk-bot` environment (secrets `SD
 | `update-drift-issue.sh <report.md> [--dry-run]` | `core:drift-issue` | Create, update, or close the single `Core main drift` issue from a report. |
 | `report-failure.sh <job> <run-url> [--dry-run]` | `core:report-failure` | Append a dated failure line to the drift issue. Called from `if: failure()` steps. |
 | `drift-issue.sh` | | Shared helpers for the two drift issue scripts (sourced, not run). |
+| `core-registry.sh` | | `core_registry <version>`: the registry that holds a core release's images, `quay.io/ai-openshell` for releases since the move and `ghcr.io/nvidia/openshell` for older ones. Sourced by `open-bump-pr.sh` and `e2e/start-gateway.sh`. |
 
 | Workflow | Runs (mise tasks) |
 |----------|------|
