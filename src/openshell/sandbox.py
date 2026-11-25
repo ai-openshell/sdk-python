@@ -15,6 +15,7 @@ import sys
 import tempfile
 import threading
 import time
+import uuid
 from collections import namedtuple
 from dataclasses import dataclass, field
 from enum import IntEnum
@@ -644,7 +645,9 @@ class SandboxSession:
         stdin: bytes | None = None,
         timeout_seconds: int | None = None,
         no_login_shell: bool = False,
+        request_id: str | None = None,
     ) -> ExecResult:
+        extra = {} if request_id is None else {"request_id": request_id}
         return self._client.exec(
             self.sandbox.name,
             command,
@@ -655,6 +658,7 @@ class SandboxSession:
             stdin=stdin,
             timeout_seconds=timeout_seconds,
             no_login_shell=no_login_shell,
+            **extra,
         )
 
     def exec_python(
@@ -1329,9 +1333,20 @@ class SandboxClient:
         stdin: bytes | None = None,
         timeout_seconds: int | None = None,
         no_login_shell: bool = False,
+        request_id: str | None = None,
     ) -> Iterator[ExecChunk | ExecResult]:
         if not command:
             raise SandboxError("command must not be empty")
+
+        if request_id is not None:
+            try:
+                parsed_request_id = uuid.UUID(request_id)
+            except (TypeError, ValueError, AttributeError) as exc:
+                raise SandboxError(
+                    "request_id must be a canonical nonzero UUID"
+                ) from exc
+            if parsed_request_id.int == 0 or str(parsed_request_id) != request_id:
+                raise SandboxError("request_id must be a canonical nonzero UUID")
 
         request = openshell_pb2.ExecSandboxRequest(
             workspace_scope=_workspace_scope(workspace),
@@ -1342,6 +1357,8 @@ class SandboxClient:
             stdin=stdin or b"",
             no_login_shell=no_login_shell,
         )
+        if request_id is not None:
+            request.request_id = request_id
         if timeout_seconds:
             request.execution_timeout.seconds = timeout_seconds
         # Use whichever is larger: the default client timeout or the command
@@ -1434,6 +1451,7 @@ class SandboxClient:
         stdin: bytes | None = None,
         timeout_seconds: int | None = None,
         no_login_shell: bool = False,
+        request_id: str | None = None,
     ) -> ExecResult:
         result: ExecResult | None = None
         for item in self.exec_stream(
@@ -1445,6 +1463,7 @@ class SandboxClient:
             stdin=stdin,
             timeout_seconds=timeout_seconds,
             no_login_shell=no_login_shell,
+            request_id=request_id,
         ):
             if stream_output and isinstance(item, ExecChunk):
                 if item.stream == "stdout":
@@ -1924,6 +1943,7 @@ class Sandbox:
         stdin: bytes | None = None,
         timeout_seconds: int | None = None,
         no_login_shell: bool = False,
+        request_id: str | None = None,
     ) -> ExecResult:
         if self._session is None:
             raise SandboxError("sandbox context has not been entered")
@@ -1935,6 +1955,7 @@ class Sandbox:
             stdin=stdin,
             timeout_seconds=timeout_seconds,
             no_login_shell=no_login_shell,
+            **({} if request_id is None else {"request_id": request_id}),
         )
 
     def exec_python(
