@@ -209,6 +209,12 @@ class EndpointFailureDomain(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     ENDPOINT_FAILURE_DOMAIN_UNSPECIFIED: _ClassVar[EndpointFailureDomain]
     ENDPOINT_FAILURE_DOMAIN_TOKEN_GRANT: _ClassVar[EndpointFailureDomain]
+
+class ServiceBackendHttpVersion(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    SERVICE_BACKEND_HTTP_VERSION_UNSPECIFIED: _ClassVar[ServiceBackendHttpVersion]
+    SERVICE_BACKEND_HTTP_VERSION_HTTP1: _ClassVar[ServiceBackendHttpVersion]
+    SERVICE_BACKEND_HTTP_VERSION_HTTP2: _ClassVar[ServiceBackendHttpVersion]
 EXTENSION_KIND_UNSPECIFIED: ExtensionKind
 EXTENSION_KIND_COMPUTE_DRIVER: ExtensionKind
 EXTENSION_KIND_CREDENTIAL_DRIVER: ExtensionKind
@@ -338,6 +344,9 @@ SERVICE_AUTHORIZATION_MODE_STRIP: ServiceAuthorizationMode
 SERVICE_AUTHORIZATION_MODE_BEARER_PASSTHROUGH: ServiceAuthorizationMode
 ENDPOINT_FAILURE_DOMAIN_UNSPECIFIED: EndpointFailureDomain
 ENDPOINT_FAILURE_DOMAIN_TOKEN_GRANT: EndpointFailureDomain
+SERVICE_BACKEND_HTTP_VERSION_UNSPECIFIED: ServiceBackendHttpVersion
+SERVICE_BACKEND_HTTP_VERSION_HTTP1: ServiceBackendHttpVersion
+SERVICE_BACKEND_HTTP_VERSION_HTTP2: ServiceBackendHttpVersion
 
 class IssueSandboxTokenRequest(_message.Message):
     __slots__ = ()
@@ -1272,7 +1281,7 @@ class CreateSshSessionResponse(_message.Message):
     def __init__(self, sandbox_id: _Optional[str] = ..., token: _Optional[str] = ..., gateway_host: _Optional[str] = ..., gateway_port: _Optional[int] = ..., gateway_scheme: _Optional[str] = ..., host_key_fingerprint: _Optional[str] = ..., expiration_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class ExposeServiceRequest(_message.Message):
-    __slots__ = ("workspace_scope", "name", "target_port", "domain", "sandbox", "request_id", "authorization_mode")
+    __slots__ = ("workspace_scope", "name", "target_port", "domain", "sandbox", "request_id", "authorization_mode", "backend_http_version")
     WORKSPACE_SCOPE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TARGET_PORT_FIELD_NUMBER: _ClassVar[int]
@@ -1280,6 +1289,7 @@ class ExposeServiceRequest(_message.Message):
     SANDBOX_FIELD_NUMBER: _ClassVar[int]
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     AUTHORIZATION_MODE_FIELD_NUMBER: _ClassVar[int]
+    BACKEND_HTTP_VERSION_FIELD_NUMBER: _ClassVar[int]
     workspace_scope: _datamodel_pb2.WorkspaceSelector
     name: str
     target_port: int
@@ -1287,7 +1297,8 @@ class ExposeServiceRequest(_message.Message):
     sandbox: str
     request_id: str
     authorization_mode: ServiceAuthorizationMode
-    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., domain: bool = ..., sandbox: _Optional[str] = ..., request_id: _Optional[str] = ..., authorization_mode: _Optional[_Union[ServiceAuthorizationMode, str]] = ...) -> None: ...
+    backend_http_version: ServiceBackendHttpVersion
+    def __init__(self, workspace_scope: _Optional[_Union[_datamodel_pb2.WorkspaceSelector, _Mapping]] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., domain: bool = ..., sandbox: _Optional[str] = ..., request_id: _Optional[str] = ..., authorization_mode: _Optional[_Union[ServiceAuthorizationMode, str]] = ..., backend_http_version: _Optional[_Union[ServiceBackendHttpVersion, str]] = ...) -> None: ...
 
 class GetServiceRequest(_message.Message):
     __slots__ = ("workspace_scope", "name", "sandbox")
@@ -1340,7 +1351,7 @@ class DeleteServiceResponse(_message.Message):
     def __init__(self, outcome: _Optional[_Union[DeletionOutcome, str]] = ...) -> None: ...
 
 class ServiceEndpoint(_message.Message):
-    __slots__ = ("metadata", "sandbox_id", "sandbox", "name", "target_port", "domain", "authorization_mode")
+    __slots__ = ("metadata", "sandbox_id", "sandbox", "name", "target_port", "domain", "authorization_mode", "backend_http_version")
     METADATA_FIELD_NUMBER: _ClassVar[int]
     SANDBOX_ID_FIELD_NUMBER: _ClassVar[int]
     SANDBOX_FIELD_NUMBER: _ClassVar[int]
@@ -1348,6 +1359,7 @@ class ServiceEndpoint(_message.Message):
     TARGET_PORT_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_FIELD_NUMBER: _ClassVar[int]
     AUTHORIZATION_MODE_FIELD_NUMBER: _ClassVar[int]
+    BACKEND_HTTP_VERSION_FIELD_NUMBER: _ClassVar[int]
     metadata: _datamodel_pb2.ObjectMeta
     sandbox_id: str
     sandbox: str
@@ -1355,7 +1367,8 @@ class ServiceEndpoint(_message.Message):
     target_port: int
     domain: bool
     authorization_mode: ServiceAuthorizationMode
-    def __init__(self, metadata: _Optional[_Union[_datamodel_pb2.ObjectMeta, _Mapping]] = ..., sandbox_id: _Optional[str] = ..., sandbox: _Optional[str] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., domain: bool = ..., authorization_mode: _Optional[_Union[ServiceAuthorizationMode, str]] = ...) -> None: ...
+    backend_http_version: ServiceBackendHttpVersion
+    def __init__(self, metadata: _Optional[_Union[_datamodel_pb2.ObjectMeta, _Mapping]] = ..., sandbox_id: _Optional[str] = ..., sandbox: _Optional[str] = ..., name: _Optional[str] = ..., target_port: _Optional[int] = ..., domain: bool = ..., authorization_mode: _Optional[_Union[ServiceAuthorizationMode, str]] = ..., backend_http_version: _Optional[_Union[ServiceBackendHttpVersion, str]] = ...) -> None: ...
 
 class ServiceEndpointResponse(_message.Message):
     __slots__ = ("endpoint", "url", "application_url", "gateway_url")
@@ -1447,20 +1460,22 @@ class ExecSandboxEvent(_message.Message):
     def __init__(self, stdout: _Optional[_Union[ExecSandboxStdout, _Mapping]] = ..., stderr: _Optional[_Union[ExecSandboxStderr, _Mapping]] = ..., exit: _Optional[_Union[ExecSandboxExit, _Mapping]] = ...) -> None: ...
 
 class TcpForwardInit(_message.Message):
-    __slots__ = ("sandbox", "workspace", "service_id", "ssh", "tcp", "authorization_token")
+    __slots__ = ("sandbox", "workspace", "service_id", "ssh", "tcp", "direct_ssh_sandbox_id", "authorization_token")
     SANDBOX_FIELD_NUMBER: _ClassVar[int]
     WORKSPACE_FIELD_NUMBER: _ClassVar[int]
     SERVICE_ID_FIELD_NUMBER: _ClassVar[int]
     SSH_FIELD_NUMBER: _ClassVar[int]
     TCP_FIELD_NUMBER: _ClassVar[int]
+    DIRECT_SSH_SANDBOX_ID_FIELD_NUMBER: _ClassVar[int]
     AUTHORIZATION_TOKEN_FIELD_NUMBER: _ClassVar[int]
     sandbox: str
     workspace: str
     service_id: str
     ssh: SshRelayTarget
     tcp: TcpRelayTarget
+    direct_ssh_sandbox_id: str
     authorization_token: str
-    def __init__(self, sandbox: _Optional[str] = ..., workspace: _Optional[str] = ..., service_id: _Optional[str] = ..., ssh: _Optional[_Union[SshRelayTarget, _Mapping]] = ..., tcp: _Optional[_Union[TcpRelayTarget, _Mapping]] = ..., authorization_token: _Optional[str] = ...) -> None: ...
+    def __init__(self, sandbox: _Optional[str] = ..., workspace: _Optional[str] = ..., service_id: _Optional[str] = ..., ssh: _Optional[_Union[SshRelayTarget, _Mapping]] = ..., tcp: _Optional[_Union[TcpRelayTarget, _Mapping]] = ..., direct_ssh_sandbox_id: _Optional[str] = ..., authorization_token: _Optional[str] = ...) -> None: ...
 
 class TcpForwardFrame(_message.Message):
     __slots__ = ("init", "data")

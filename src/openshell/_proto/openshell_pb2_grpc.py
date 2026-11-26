@@ -569,7 +569,9 @@ class OpenShellServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetSandbox(self, request, context):
-        """Fetch a sandbox by name.
+        """Fetch a sandbox by name. Response metadata x-openshell-direct-ssh: 1
+        advertises support for TcpForwardInit.direct_ssh_sandbox_id for this
+        caller. ForwardTcp authorizes each connection independently.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
