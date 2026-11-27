@@ -63,7 +63,10 @@ class OpenShellStub:
     client sharing the gateway's filesystem can complete the upload.
     """
     GetSandbox: _grpc.UnaryUnaryMultiCallable[_openshell_pb2.GetSandboxRequest, _openshell_pb2.SandboxResponse]
-    """Fetch a sandbox by name."""
+    """Fetch a sandbox by name. Response metadata x-openshell-direct-ssh: 1
+    advertises support for TcpForwardInit.direct_ssh_sandbox_id for this
+    caller. ForwardTcp authorizes each connection independently.
+    """
     ListSandboxes: _grpc.UnaryUnaryMultiCallable[_openshell_pb2.ListSandboxesRequest, _openshell_pb2.ListSandboxesResponse]
     """List sandboxes."""
     CreateSandboxTemplate: _grpc.UnaryUnaryMultiCallable[_openshell_pb2.CreateSandboxTemplateRequest, _openshell_pb2.SandboxTemplateResponse]
@@ -363,7 +366,10 @@ class OpenShellAsyncStub(OpenShellStub):
     client sharing the gateway's filesystem can complete the upload.
     """
     GetSandbox: _aio.UnaryUnaryMultiCallable[_openshell_pb2.GetSandboxRequest, _openshell_pb2.SandboxResponse]  # type: ignore[assignment]
-    """Fetch a sandbox by name."""
+    """Fetch a sandbox by name. Response metadata x-openshell-direct-ssh: 1
+    advertises support for TcpForwardInit.direct_ssh_sandbox_id for this
+    caller. ForwardTcp authorizes each connection independently.
+    """
     ListSandboxes: _aio.UnaryUnaryMultiCallable[_openshell_pb2.ListSandboxesRequest, _openshell_pb2.ListSandboxesResponse]  # type: ignore[assignment]
     """List sandboxes."""
     CreateSandboxTemplate: _aio.UnaryUnaryMultiCallable[_openshell_pb2.CreateSandboxTemplateRequest, _openshell_pb2.SandboxTemplateResponse]  # type: ignore[assignment]
@@ -690,7 +696,10 @@ class OpenShellServicer:
         request: _openshell_pb2.GetSandboxRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_openshell_pb2.SandboxResponse, _abc.Awaitable[_openshell_pb2.SandboxResponse]]:
-        """Fetch a sandbox by name."""
+        """Fetch a sandbox by name. Response metadata x-openshell-direct-ssh: 1
+        advertises support for TcpForwardInit.direct_ssh_sandbox_id for this
+        caller. ForwardTcp authorizes each connection independently.
+        """
 
     def ListSandboxes(
         self,
